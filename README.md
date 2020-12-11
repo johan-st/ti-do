@@ -1,3 +1,4 @@
+![Node.js CI](https://github.com/johan-st/ti-do/workflows/Node.js%20CI/badge.svg)
 # tido
 
 _a react todo app_
