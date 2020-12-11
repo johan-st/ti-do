@@ -1,14 +1,14 @@
 import dotenv from 'dotenv'
 dotenv.config()
 const PORT = process.env.PORT || 80
-const BUILD_PATH = process.env.BUILD_PATH || '../client/build'
+const BUILD_DIR = process.env.BUILD_DIR || '../client/build'
 
 
 import express from 'express'
 const app = express()
 
-app.get('/test', (_, res) => { res.json({ PORT, BUILD_PATH }) })
-app.use(express.static(BUILD_PATH))
+app.get('/test', (_, res) => { res.json({ ...process.env }) })
+app.use(express.static(BUILD_DIR))
 
 app.listen(PORT, () => {
   console.log(`express is listening on http://localhost:${PORT}`)

@@ -1,5 +1,0 @@
-
-docker build --pull --rm -f "Dockerfile" -t tido:latest .
-
-heroku container:push -a ti-do web
-heroku container:release -a ti-do web

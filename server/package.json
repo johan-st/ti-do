@@ -5,8 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node js/server.js",
-    "watch": "nodemon js/server.js",
+    "start": "nodemon js/server.js",
     "tsc": "tsc -w -p ."
   },
   "keywords": [],
