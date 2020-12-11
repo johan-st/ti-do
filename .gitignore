@@ -102,3 +102,7 @@ dist
 
 # TernJS port file
 .tern-port
+
+# TS output .js-files
+
+server/js/
