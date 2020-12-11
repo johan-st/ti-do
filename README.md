@@ -2,7 +2,7 @@
 
 _a react todo app_
 ___
-Dev notes:
+Developers notes:
 <pre>
 docker build --pull --rm -f "Dockerfile" -t tido:latest .
 docker run --name ti-do --rm -d -p 80:80 tido:latest
