@@ -48,7 +48,7 @@ heroku container:push -a ti-do web && heroku container:release -a ti-do web
 ## security
   - security on API
   - limit data access in API
-  - webRTC datachannel
+  - *possible webRTC datachannel?*
 
 ## privacy
   - minimal tracking
