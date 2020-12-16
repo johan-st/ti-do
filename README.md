@@ -1,18 +1,130 @@
-![Node.js CI](https://github.com/johan-st/ti-do/workflows/Node.js%20CI/badge.svg)
+![test suites](https://github.com/johan-st/ti-do/workflows/Node.js%20CI/badge.svg)
 # tido
 
-_a react todo app_
-___
-Developers notes:
-<pre>
+### dev notes:  
+**run from project root folder**  
+build docker image
+```bash 
 docker build --pull --rm -f "Dockerfile" -t tido:latest .
-docker run --name ti-do --rm -d -p 80:80 tido:latest
+```
 
-heroku container:push -a ti-do web
-heroku container:release -a ti-do web
-heroku container:push -a ti-do web && heroku container:release -a ti-do web</pre>
-___
-## scope
+run docker image
+
+```bash
+docker run --name ti-do --rm -d -p 80:80 tido:latest
+```
+
+build and deploy too heroku
+```bash
+heroku container:push -a ti-do web && heroku container:release -a ti-do web
+```
+# scope
+## features
+  - persistent changes (db)
+  - real time co-op (sock)
+  - drag and drop rearange (beautiful DnD)
+  - r/rw/admin priveleges (metadata)
+  - infinite nesting (recursive structure)
+
+
+## tech
+  - mongoDB
+  - graphQL
+  - socket io
+  - beautiful DnD
+  - useContext + useReducer
+  - JWT BEARER
+
+
+## plan
+  1. Build full feature backend
+  2. Build react app
+
+
+## tests
+  - high coverage on API
+  - basic coverage on Client
+
+## security
+  - security on API
+  - limit data access in API
+  - webRTC datachannel
+
+## privacy
+  - minimal tracking
+  - future: (encrypt at rest)
+
+## insurances
+  - future: secure data
+  - future: (data in cluster)
+
+## obstacles
+  - webRTC implementation time
+  - GraphQL implementation time
+  - Typescript learning curve
+  
+
+ 
+# PROGRESS
+timeline:  
+16:th finnish planning & setup. Start on graphql  
+17:th graphql resolvers (incl. mutations, db)  
+18:th BEARER token & permissions. start client  
+19:th client (single user)   
+20:th client (multi user)  
+21:st deployment and clean-up  
+22:nd evaluate work  
+future: use as my daily planner and tinker away :happy:
+
+
+### doing
+  - graphql
+
+### next up
+  - peristence (db)
+  - API JWT BEARER auth
+
+### done
+- typescript
+- jest testrunner
+- GitHub CI
+- Container build procedure
+- heroku deploy procedure
+- decided on features
+- initial plan
+
+
+### todo-dump
+
+- persistance
+- check out remarkable
+
+## dump
+
+- Front-End
+  - Cmd-Msg (elm style) architecture
+  - generate html from markdown w/ remarkable
+  - drag and drop
+  - PWA for offline capability
+  - accessability
+- Back-End
+  - mongoose w/ graphql?
+  - jwt auth (BEARER)
+  - docker + NGINX + node + mongo?
+  - prepped for micro-services?
+- Front & Back -End
+  - Sync after offline (conflict resolution?)
+  - versioning data for futuree upgrades?
+  - data encryption?
+  - encrypt at rest?
+- Strategy
+  - use existing libraries when possible
+  - Make a solid plan
+  - sketch interactions
+  - modular, pre-defined APIs
+  - have tests for APIs
+  - focus tests on critical components
+
 
 ## user-stories
 
@@ -142,74 +254,9 @@ ___
     - _always_
 - I as an owner/creator of a certain to-do list can freeze/unfreeze a to-do list I've created to avoid other users from mutating it
   - **decision**
-    - _assign r/rw user privileges instead_
+    - __no!__ _assign r/rw user privileges instead_
     - medium effort
     - high payoff
   - notes
-    - _feeze unfreeze is metadata_
     - _priveleges is metadata_
 
-## features
-
-## tech
-
-## plan
-
-## tests
-
-## security
-
-## privacy
-
-## insurances
-
-## obstacles
-
-# WIP
-
-### doing
-
-- set-up dev-env
-
-### done
-
-### next up
-
-- decide on userstories
-
-### todo-dump
-
-- set up dev env
-- decide on userstories
-- decided on feeatures
-- decide on tech for
-  - test
-  - persistance
-  - deployment
-- check out remarkable
-
-## dump
-
-- Front-End
-  - Cmd-Msg (elm style) architecture
-  - generate html from markdown?
-  - drag and drop
-  - PWA for offline capability
-  - accessability
-- Back-End
-  - mongoose w/ graphql?
-  - jwt auth (BEARER)
-  - docker + NGINX + node + mongo?
-  - micro-services?
-- Front & Back -End
-  - Sync after offline (conflict resolution?)
-  - versioning data for futuree upgrades?
-  - data encryption?
-  - encrypt at rest?
-- Strategy
-  - use existing libraries when possible
-  - Make a solid plan
-  - sketch interactions
-  - modular, pre-defined APIs
-  - have tests for APIs
-  - focus tests on critical components
