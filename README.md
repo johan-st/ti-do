@@ -1,4 +1,4 @@
-![test suites](https://github.com/johan-st/ti-do/workflows/Node.js%20CI/badge.svg)
+![test suites](https://github.com/johan-st/ti-do/workflows/test%20suites/badge.svg?branch=main)
 # tido
 
 ### dev notes:  
