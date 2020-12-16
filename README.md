@@ -14,7 +14,7 @@ run docker image
 docker run --name ti-do --rm -d -p 80:80 tido:latest
 ```
 
-build and deploy too heroku
+build and deploy to heroku
 ```bash
 heroku container:push -a ti-do web && heroku container:release -a ti-do web
 ```
