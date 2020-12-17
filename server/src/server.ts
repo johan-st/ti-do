@@ -1,4 +1,5 @@
 import * as dotenv from 'dotenv'
+import * as express from 'express'
 import { graphqlHTTP } from 'express-graphql'
 import { schema, root } from './repository'
 
@@ -6,17 +7,13 @@ dotenv.config()
 const PORT = process.env.PORT || 80
 const BUILD_DIR = process.env.BUILD_DIR || '../client/build'
 
-
-import * as express from 'express'
 const app = express()
 
-// Create an express server and a GraphQL endpoint
 app.use('/gql', graphqlHTTP({
-  schema: schema,  // Must be provided
+  schema: schema,
   rootValue: root,
-  graphiql: true,  // Enable GraphiQL when server endpoint is accessed in browser
+  graphiql: true,
 }))
-
 
 app.get('/test', (_, res) => { res.json({ ...process.env }) })
 app.use(express.static(BUILD_DIR))

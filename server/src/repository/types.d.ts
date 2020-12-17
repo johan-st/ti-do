@@ -6,15 +6,15 @@ type User =
    }
 type ListNode = {
    id: NodeId
-   subNodes: ListNode[]
+   subNodes: ListNode[] | null
    metadata: Metadata
 }
 
 type Metadata = {
-   owner: UserID
-   readers: UserID[]
-   writers: UserID[]
-   admins: UserID[]
+   owner: UserId
+   readers: UserId[] | null
+   writers: UserId[] | null
+   admins: UserId[] | null
 }
 
 type UserId = string

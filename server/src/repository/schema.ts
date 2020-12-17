@@ -1,30 +1,33 @@
 import { buildSchema } from 'graphql'
 
 export const schema = buildSchema(`
+type Query {
+  user(email: String! hash: String!): User
+  rootLists(userId:String!):[ListNode]
+}
 type User 
-   {
-      id: String!
-      name: String!
-      email: String
-   }
+  {
+  id: String!
+  name: String!
+  hash: String!
+  email: String!
+  }
+   
 type ListNode
  {
-   id: String!
-   subNodes: [ListNode!]
-   metadata: Metadata!
-}
+  id: String!
+  rootNode: Boolean!
+  subNodes: [ListNode!]
+  metadata: Metadata!
+  }
 
 type Metadata 
  {
-   owner: String!
-   readers: [String!]
-   writers: [String!]
-   admins: [String!]
-}
+  owner: String!
+  readers: [String!]
+  writers: [String!]
+  admins: [String!]
+  }
 `)
 
-// scalar UserId
-// scalar NodeId
-// scalar Email
-// scalar UserName
 
