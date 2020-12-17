@@ -28,8 +28,7 @@ heroku container:push -a ti-do web && heroku container:release -a ti-do web
     "hashType":"SHA512",
     "hashSalt":"rYFmMHFM3oCWMETL",
     "tagline": "first man on the baloon",
-    "avatar": "https://avatars.dicebear.com/4.1/api/avataaars/jayMan.svg",
-    }
+    "avatar": "https://avatars.dicebear.com/4.1/api/avataaars/jayMan.svg"
 }
 ```
 # scope

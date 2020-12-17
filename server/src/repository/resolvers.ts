@@ -1,11 +1,15 @@
-
+import { User, ListNode } from '../types'
 // Sample users
 const users = [
   {
-    id: '6b124930-82eb-49d7-b106-51cdc10ae795',
-    name: 'johan',
-    hash: '5e2a8e07be7e1b7b5eca28a4af10ee8c0d81233dab0bf2b62c1dc1eb6b528440',
-    email: 'johan@styldesign.se'
+    userId: 'dc79214a-25f5-441c-a527-02a2ba38c4f4',
+    fullName: 'Johan Strand',
+    email: 'johan@styldesign.se',
+    passwordHash: '72d0585274e2780a551e154eef8217121cf3b35ef2bd65efc9695580fdc51695576ba38f5846d039fbfa97994e0f56b048466d073e52a3c169fee63844e0c00d',
+    hashType: 'SHA512',
+    hashSalt: 'rYFmMHFM3oCWMETL',
+    tagline: 'first man on the baloon',
+    avatar: 'https://avatars.dicebear.com/4.1/api/avataaars/jayMan.svg'
   }
 ]
 const lists = [
@@ -13,7 +17,7 @@ const lists = [
     id: 'bb0d8889-8035-4a9a-9d43-23f77cae3fe5',
     subNodes: null,
     metadata: {
-      owner: '6b124930-82eb-49d7-b106-51cdc10ae795',
+      owner: 'dc79214a-25f5-441c-a527-02a2ba38c4f4',
       readers: null,
       writers: null,
       admins: null
@@ -23,10 +27,19 @@ const lists = [
 ]
 
 // Return a single user
-const getUser = (args: { email: string, hash: string }): User | null => {
-  const user = users.find(user => user.email === args.email && user.hash === args.hash)
-  console.log(user)
-  return user ? user : null
+const getUser = (args: { email?: string, userId?: string }): User | null => {
+  if (args.userId) {
+    // TODO can this be made neater?
+    const user = users.find(user => {
+      return user.userId === args.userId
+    })
+    return user ? user : null
+  }
+  if (args.email) {
+    const user = users.find(user => user.email === args.email)
+    return user ? user : null
+  }
+  return null
 }
 
 const getRootNodes = (args: { id: string }): ListNode[] | null => {
@@ -42,5 +55,6 @@ const getRootNodes = (args: { id: string }): ListNode[] | null => {
 // Root resolver
 export const root = {
   user: getUser,
-  rootLists: getRootNodes
+  userByEmail: getUser,
+  rootNodes: getRootNodes
 }
