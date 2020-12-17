@@ -82,7 +82,7 @@ heroku container:push -a ti-do web && heroku container:release -a ti-do web
 timeline:  
 16:th finnish planning & setup. Start on graphql  
 17:th graphql resolvers (incl. mutations, db)  
-18:th BEARER token & permissions. start client  
+18:th Cookie jwt w/  permissions. start client  
 19:th client (single user)   
 20:th client (multi user)  
 21:st deployment and clean-up  
