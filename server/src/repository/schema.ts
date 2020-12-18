@@ -22,6 +22,9 @@ type ListNode
  {
   nodeId: String!
   rootNode: Boolean!
+  completed: Boolean!
+  title: String!
+  notes: String
   subNodes: [String!]
   metadata: Metadata!
   }

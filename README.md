@@ -91,13 +91,14 @@ future: use as my daily planner and tinker away :happy:
 
 
 ### doing
-  - graphql
+  - JWT cookie auth
 
 ### next up
-  - peristence (db)
-  - API JWT BEARER auth
+  - Wireframe frontend
 
 ### done
+- create postman tests of GraphQL endpoint
+- peristence (db)
 - typescript
 - jest testrunner
 - GitHub CI
