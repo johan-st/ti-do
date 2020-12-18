@@ -18,6 +18,19 @@ build and deploy to heroku
 ```bash
 heroku container:push -a ti-do web && heroku container:release -a ti-do web
 ```
+```json
+// example user
+{
+    "userId": "dc79214a-25f5-441c-a527-02a2ba38c4f4",
+    "fullName": "Johan Strand",
+    "email": "johan@styldesign.se",
+    "passwordHash": "72d0585274e2780a551e154eef8217121cf3b35ef2bd65efc9695580fdc51695576ba38f5846d039fbfa97994e0f56b048466d073e52a3c169fee63844e0c00d",
+    "hashType":"SHA512",
+    "hashSalt":"rYFmMHFM3oCWMETL",
+    "tagline": "first man on the baloon",
+    "avatar": "https://avatars.dicebear.com/4.1/api/avataaars/jayMan.svg"
+}
+```
 # scope
 ## features
   - persistent changes (db)
@@ -69,7 +82,7 @@ heroku container:push -a ti-do web && heroku container:release -a ti-do web
 timeline:  
 16:th finnish planning & setup. Start on graphql  
 17:th graphql resolvers (incl. mutations, db)  
-18:th BEARER token & permissions. start client  
+18:th Cookie jwt w/  permissions. start client  
 19:th client (single user)   
 20:th client (multi user)  
 21:st deployment and clean-up  
@@ -78,13 +91,14 @@ future: use as my daily planner and tinker away :happy:
 
 
 ### doing
-  - graphql
+  - JWT cookie auth
 
 ### next up
-  - peristence (db)
-  - API JWT BEARER auth
+  - Wireframe frontend
 
 ### done
+- create postman tests of GraphQL endpoint
+- peristence (db)
 - typescript
 - jest testrunner
 - GitHub CI
