@@ -1,50 +1,27 @@
 import { Router } from 'express'
 import * as sha512 from 'crypto-js/sha512'
-import fetch from 'node-fetch'
 import { Request, Response } from 'express'
+import { DataWrapper } from '../repository'
 const route = Router()
 
+// TODO: login doesn't need access to lists. Which it has in the current implementation
+const db = new DataWrapper()
 
-const loginHandler = (req: Request, res: Response) => {
+const handler = async (req: Request, res: Response) => {
+  console.log('login handler')
   const email = req.body.email
   const pw = req.body.password
-  const query = `
-  query userByEmail ($email: String!) {
-    userByEmail(email:$email) {
-      userId
-      fullName
-      email
-      passwordHash
-      hashSalt
-      tagline
-      avatar
-    }
-  }`
-  fetch('http://localhost:3001/gql', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      'Accept': 'application/json',
-    },
-    body: JSON.stringify({
-      query,
-      variables: { email },
+  const user = await db.userByEmail(email)
+  if (sha512(user.hashSalt + pw).toString() === user.passwordHash) {
+    res.json({
+      userId: user.userId,
+      fullName: user.fullName,
+      email: user.email,
+      tagline: user.tagline,
+      avatar: user.avatar
     })
-  })
-    .then(r => r.json())
-    .then(r => {
-      const user = r.data.userByEmail
-      if (sha512(user.hashSalt + pw).toString() === user.passwordHash) {
-        res.json({
-          userId: user.userId,
-          fullName: user.fullName,
-          email: user.email,
-          tagline: user.tagline,
-          avatar: user.avatar
-        })
-      }
-    })
-    .catch(e => console.log(e))
+  }
+  res.json({ status: 'invalid login credentials' })
 }
-route.post('/login', loginHandler)
+route.post('/login', handler)
 export { route }

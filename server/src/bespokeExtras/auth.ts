@@ -1,21 +1,30 @@
-import { NextFunction, Request, Response } from 'express'
+import { Request } from 'express'
+import { AuthStatus, AuthToken } from '../types'
+
 import * as jwt from 'jsonwebtoken'
 const secret = process.env.JWT_SECRET ?? 'dev-secret'
 
+
 export const authenticator = (req: Request): AuthStatus => {
 
-  console.log(req.headers)
   const token = req.cookies['x-auth-token']
   const authStatus: AuthStatus = { isValid: false }
-  if (token) {
+  if (process.env.DEBUG) {
+    authStatus.isValid = true
+    console.log('AUTHENTICATOR IN DEBUG MODE')
+
+  } else if (token) {
     try {
-      const verifiedToken: unknown = jwt.verify(token, secret)
-      authStatus.userId = verifiedToken ? verifiedToken.userId || undefined : undefined
+      const verifiedToken = jwt.verify(token, secret)
+      if ((verifiedToken as AuthToken).userId) {
+        authStatus.userId = (verifiedToken as AuthToken).userId
+      }
     } catch (error) {
       console.log(error)
 
     }
   }
-  console.log('token')
+  console.log(authStatus)
+
   return authStatus
 }

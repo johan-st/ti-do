@@ -1,6 +1,6 @@
 type User = {
    userId: UserId;
-   fullName: UserName;
+   fullName: FullName;
    email: Email;
    passwordHash: string;
    hashType: string;
@@ -8,3 +8,9 @@ type User = {
    tagline: string;
    avatar: string;
 };
+
+type UserId = string
+type Email = string
+type FullName = string
+
+export { User, UserId, Email, FullName }

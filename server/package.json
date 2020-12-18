@@ -2,7 +2,7 @@
   "name": "server",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "src/server.js",
   "scripts": {
     "test": "jest",
     "start": "nodemon js/server.js",
@@ -32,6 +32,7 @@
     "@types/express": "^4.17.9",
     "@types/jest": "^26.0.19",
     "@types/jsonwebtoken": "^8.5.0",
+    "@types/mongodb": "^3.6.3",
     "@types/node": "^14.14.12",
     "@types/node-fetch": "^2.5.7",
     "@types/uuid": "^8.3.0",

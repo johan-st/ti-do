@@ -1,2 +1,3 @@
 import { route as loginRoute } from './login'
-export { loginRoute }
+import { route as mainRoute } from './main'
+export { loginRoute, mainRoute }

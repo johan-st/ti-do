@@ -3,8 +3,9 @@ import { buildSchema } from 'graphql'
 export const schema = buildSchema(`
 type Query {
   user(userId: String!): User
-  userByEmail(email:String!): User
+  node(nodeId:String!):ListNode
   rootNodes(userId:String!):[ListNode]
+
 }
 type User 
   {
@@ -21,7 +22,7 @@ type ListNode
  {
   nodeId: String!
   rootNode: Boolean!
-  subNodes: [ListNode!]
+  subNodes: [String!]
   metadata: Metadata!
   }
 

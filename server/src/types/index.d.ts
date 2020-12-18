@@ -1,6 +1,6 @@
 import { AuthStatus } from './AuthStatus'
-import { ListNode } from './ListNode'
+import { AuthToken } from './AuthToken'
 import { Metadata } from './Metadata'
-import { User } from './User'
-import { UserId, NodeId, Email, FullName } from './simpleTypes'
-export { AuthStatus, ListNode, Metadata, User, UserId, NodeId, Email, FullName }
+import { ListNode, NodeId } from './ListNode'
+import { User, UserId, Email, FullName } from './User'
+export { AuthStatus, AuthToken, ListNode, Metadata, User, UserId, NodeId, Email, FullName }

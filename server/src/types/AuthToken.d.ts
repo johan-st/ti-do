@@ -1,5 +1,6 @@
-type AuthToken =
+import { UserId } from './'
+
+export type AuthToken =
    {
-      isValid: boolean
       userId?: UserId
    }

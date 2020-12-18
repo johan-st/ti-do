@@ -104,5 +104,4 @@ dist
 .tern-port
 
 # TS output .js-files
-
 server/js/
