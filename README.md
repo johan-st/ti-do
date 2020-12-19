@@ -83,10 +83,11 @@ timeline:
 16:th finnish planning & setup. Start on graphql  
 17:th graphql resolvers (incl. mutations, db)  
 18:th Cookie jwt w/  permissions. start client  
-19:th client (single user)   
-20:th client (multi user)  
-21:st deployment and clean-up  
-22:nd evaluate work  
+19:th -- Break --
+20:th client (single user)   
+21:th client (multi user)  
+22:st deployment and clean-up  
+23:nd evaluate work  
 future: use as my daily planner and tinker away :happy:
 
 
