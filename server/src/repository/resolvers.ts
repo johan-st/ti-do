@@ -37,6 +37,10 @@ const createListNode = async (args: { userId: UserId, listNode: ListNodeInput })
   db.addListNode(newNode)
   return undefined
 }
+const uppdateListNode = async (args: { listNode: ListNode }): Promise<ListNode | undefined> => {
+  db.updateListNode(args.listNode)
+  return undefined
+}
 // Root resolver
 export const root = {
   user: getUser,

@@ -71,6 +71,8 @@ heroku container:push -a ti-do web && heroku container:release -a ti-do web
   - security on API
   - limit data access in API
   - *possible webRTC datachannel?*
+  - Client regarded as untrusted (always do auth)
+  - cookie jwt (signed, exp, same origin, http only)
 
 ## privacy
   - minimal tracking
@@ -84,8 +86,6 @@ heroku container:push -a ti-do web && heroku container:release -a ti-do web
   - webRTC implementation time
   - GraphQL implementation time
   - Typescript learning curve
-  
-
  
 # PROGRESS
 timeline:  
@@ -101,6 +101,7 @@ future: use as my daily planner and tinker away :happy:
 
 
 ### doing
+  - get auth info to resolver
   - JWT cookie auth
   - Mutators
 
