@@ -17,7 +17,7 @@ const options: mongo.MongoClientOptions = {
   }
 }
 
-class DataWrapper {
+export class DataWrapper {
   private static url: string = url
   client: mongo.MongoClient
   users: mongo.Collection | undefined
@@ -53,10 +53,14 @@ class DataWrapper {
     // TODO: row below ok?
     return (listNodes as ListNode[])
   }
+  async addListNode(listNode: ListNode): Promise<ListNode | undefined> {
+    const r = await this.lists?.insertOne(listNode)
+    if (r?.result.ok) {
+      return listNode
+    }
+  }
   close(): void {
     this.client.close()
   }
 
 }
-
-export { DataWrapper }

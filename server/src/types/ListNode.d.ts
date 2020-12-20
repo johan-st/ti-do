@@ -1,7 +1,8 @@
 import { Metadata } from './'
 
+type NodeId = string
 
-export type ListNode = {
+type ListNode = {
    nodeId: NodeId
    rootNode: boolean
    completed: boolean
@@ -11,4 +12,10 @@ export type ListNode = {
    metadata: Metadata
 };
 
-export type NodeId = string
+type ListNodeInput = {
+   rootNode: boolean
+   title: string
+   notes: string
+};
+
+export { ListNode, NodeId, ListNodeInput }

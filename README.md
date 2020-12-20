@@ -1,6 +1,15 @@
 ![test suites](https://github.com/johan-st/ti-do/workflows/test%20suites/badge.svg?branch=main)
 # tido
 
+my experiences so far:
+ - improved knowledge in typescript
+ - improved knowledge in graphql, schemas, queries and mutations
+ - explored new patterns in regards to security
+ - explored CI-patterns
+ - improved holistic view on Dev(Sec)Ops
+ - explored testable dev-patterns
+ - explorerd decision space in regards to functional vs OO. (where to use which)
+
 ### dev notes:  
 **run from project root folder**  
 build docker image
@@ -93,6 +102,7 @@ future: use as my daily planner and tinker away :happy:
 
 ### doing
   - JWT cookie auth
+  - Mutators
 
 ### next up
   - Wireframe frontend
@@ -107,12 +117,10 @@ future: use as my daily planner and tinker away :happy:
 - heroku deploy procedure
 - decided on features
 - initial plan
-
-
-### todo-dump
-
-- persistance
 - check out remarkable
+
+## implementation details
+**list priveleges** (such as *readers, writers, admins*) is inherited from root node.
 
 ## dump
 

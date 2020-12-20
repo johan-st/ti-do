@@ -5,10 +5,12 @@ type Query {
   user(userId: String!): User
   node(nodeId:String!):ListNode
   rootNodes(userId:String!):[ListNode]
-
+}
+type Mutation {
+  createListNode(listNode: ListNodeInput!):ListNode
 }
 type User 
-  {
+{
   userId: String!
   fullName: String!
   email: String!
@@ -16,8 +18,8 @@ type User
   hashSalt: String!
   tagline: String!
   avatar: String!
-  }
-   
+}
+
 type ListNode
  {
   nodeId: String!
@@ -28,7 +30,12 @@ type ListNode
   subNodes: [String!]
   metadata: Metadata!
   }
-
+input ListNodeInput 
+ {
+  rootNode: Boolean!
+  title: String!
+  notes: String
+  }
 type Metadata 
  {
   owner: String!

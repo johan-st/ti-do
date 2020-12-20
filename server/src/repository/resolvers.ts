@@ -1,4 +1,5 @@
-import { User, ListNode } from '../types'
+import { User, ListNode, ListNodeInput, NodeId, Metadata, UserId } from '../types'
+import * as uuid from 'uuid'
 import { DataWrapper } from '../repository'
 const db = new DataWrapper()
 
@@ -25,11 +26,22 @@ const getRootNodes = async (args: { userId: string }): Promise<ListNode[] | unde
   }
   return undefined
 }
-
+const createListNode = async (args: { userId: UserId, listNode: ListNodeInput }): Promise<ListNode | undefined> => {
+  const metadata: Metadata = {
+    owner: args.userId,
+    readers: null,
+    writers: null,
+    admins: null
+  }
+  const newNode = { ...args.listNode, subNodes: [], nodeId: (uuid.v4() as NodeId), completed: false, metadata }
+  db.addListNode(newNode)
+  return undefined
+}
 // Root resolver
 export const root = {
   user: getUser,
   node: getNode,
-  rootNodes: getRootNodes
+  rootNodes: getRootNodes,
+  createListNode: createListNode
 
 }
