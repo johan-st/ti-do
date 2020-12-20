@@ -40,6 +40,8 @@ heroku container:push -a ti-do web && heroku container:release -a ti-do web
     "avatar": "https://avatars.dicebear.com/4.1/api/avataaars/jayMan.svg"
 }
 ```
+# resources:
+- gql security https://www.howtographql.com/advanced/4-security/
 # scope
 ## features
   - persistent changes (db)

@@ -1,0 +1,54 @@
+type Query {
+  user(userId: String!): PublicUser
+  myProfile: User
+  node(nodeId: String!): ListNode
+  rootNodes: [ListNode]
+}
+type Mutation {
+  createListNode(listNode: ListNodeInput!): ListNode
+  markNodeComplete(nodeId: String!): ListNode
+  markNodeIncomplete(nodeId: String!): ListNode
+  addReader(nodeId: String!, userId: String!): ListNode
+  removeReader(nodeId: String!, userId: String!): ListNode
+  addWriter(nodeId: String!, userId: String!): ListNode
+  removeWriter(nodeId: String!, userId: String!): ListNode
+  addAdmin(nodeId: String!, userId: String!): ListNode
+  removeAdmin(nodeId: String!, userId: String!): ListNode
+  transferOwnership(nodeId: String!, userId: String!): ListNode
+}
+type User {
+  userId: String!
+  fullName: String!
+  email: String!
+  passwordHash: String!
+  hashSalt: String!
+  tagline: String!
+  avatar: String!
+}
+type PublicUser {
+  userId: String!
+  fullName: String!
+  email: String!
+  tagline: String!
+  avatar: String!
+}
+type ListNode {
+  nodeId: String!
+  rootNode: Boolean!
+  completed: Boolean!
+  title: String!
+  notes: String
+  subNodes: [String!]
+  metadata: Metadata!
+}
+input ListNodeInput {
+  rootNode: Boolean!
+  title: String!
+  notes: String
+}
+type Metadata {
+  owner: String!
+  readers: [String!]!
+  writers: [String!]!
+  admins: [String!]!
+}

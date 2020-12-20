@@ -13,6 +13,7 @@ const PORT = process.env.PORT || 80
 const BUILD_DIR = process.env.BUILD_DIR || '../client/build'
 
 const app = express()
+// TODO:  body parser is deprecated
 app.use(bodyParser.json())
 app.use(cookieParser())
 app.get('/test', (_, res) => { res.json({ ...process.env, up: true }) })
@@ -26,6 +27,7 @@ app.use((req, res, next) => {
       schema: schema,
       rootValue: root,
       graphiql: true,
+      context: auth
     }))
   }
   next()
@@ -33,9 +35,6 @@ app.use((req, res, next) => {
 
 app.post('/login', loginRoute)
 app.use(express.static(BUILD_DIR))
-
-
 app.listen(PORT, () => {
   console.log(`express is listening on http://localhost:${PORT}`)
 })
-

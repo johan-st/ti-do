@@ -2,5 +2,6 @@ import { UserId } from './'
 
 export type AuthToken =
    {
-      userId?: UserId
+      userId: UserId,
+      exp: number
    }

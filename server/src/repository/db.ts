@@ -19,9 +19,9 @@ const options: mongo.MongoClientOptions = {
 
 export class DataWrapper {
   private static url: string = url
-  client: mongo.MongoClient
-  users: mongo.Collection | undefined
-  lists: mongo.Collection | undefined
+  private client: mongo.MongoClient
+  private users: mongo.Collection | undefined
+  private lists: mongo.Collection | undefined
   private options: mongo.MongoClientOptions
   constructor() {
     this.options = options
@@ -56,6 +56,14 @@ export class DataWrapper {
   async addListNode(listNode: ListNode): Promise<ListNode | undefined> {
     const r = await this.lists?.insertOne(listNode)
     if (r?.result.ok) {
+      return listNode
+    }
+  }
+  async updateListNode(listNode: ListNode): Promise<ListNode | undefined> {
+    const r = await this.lists?.findOneAndUpdate({ nodeId: listNode.nodeId }, listNode)
+    console.log(r)
+
+    if (r) {
       return listNode
     }
   }
