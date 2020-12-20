@@ -9,8 +9,8 @@ export const authenticator = (req: Request): Authentication => {
 
   const token = req.cookies['x-auth-token']
   if (process.env.DEBUG) {
-    const validAuth: ValidAuthentication = { isValid: true, userId: 'dc79214a-25f5-441c-a527-02a2ba38c4f4' }
-    console.log('AUTHENTICATOR IN DEBUG MODE')
+    const validAuth: ValidAuthentication = { isValid: true, userId: 'ffffffff-ffff-ffff-ffff-ffffffffffff' }
+    console.log('REQUEST BLINDLY AUTHENTICADED IN DEBUG MODE')
     return validAuth
   }
   if (token) {

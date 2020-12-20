@@ -5,7 +5,8 @@ type Query {
   rootNodes: [ListNode]
 }
 type Mutation {
-  createListNode(listNode: ListNodeInput!): ListNode
+  createRootNode(listNode: ListNodeInput!): ListNode
+  createChildNode(listNode: ListNodeInput!, parentId: String): ListNode
   markNodeComplete(nodeId: String!): ListNode
   markNodeIncomplete(nodeId: String!): ListNode
   addReader(nodeId: String!, userId: String!): ListNode
@@ -42,7 +43,6 @@ type ListNode {
   metadata: Metadata!
 }
 input ListNodeInput {
-  rootNode: Boolean!
   title: String!
   notes: String
 }

@@ -7,15 +7,14 @@ type ListNode = {
    rootNode: boolean
    completed: boolean
    title: string
-   notes: string
+   notes?: string
    subNodes: NodeId[]
    metadata: Metadata
 };
 
 type ListNodeInput = {
-   rootNode: boolean
    title: string
-   notes: string
+   notes?: string
 };
 
 export { ListNode, NodeId, ListNodeInput }

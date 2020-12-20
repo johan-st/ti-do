@@ -1,3 +1,4 @@
+import { GraphQLError } from 'graphql'
 import { User, Email, ListNode, UserId, NodeId } from '../types'
 
 export class MockDataWrapper {
@@ -5,6 +6,8 @@ export class MockDataWrapper {
     console.log('using MOCK database')
   }
   async userByEmail(email: Email): Promise<User> {
+    console.log('[MOCK DATA] userByEmail')
+
     return new Promise((resolve, reject) => {
       const user = mockUsers.find((u) => { u.email === email })
       if (user) {
@@ -13,6 +16,7 @@ export class MockDataWrapper {
     })
   }
   async userById(id: UserId): Promise<User> {
+    console.log('[MOCK DATA] userById')
     return new Promise((resolve, reject) => {
       const user = mockUsers.find((u) => { u.userId === id })
       if (user) {
@@ -21,14 +25,19 @@ export class MockDataWrapper {
     })
   }
   async nodeById(id: NodeId): Promise<ListNode> {
+    console.log('[MOCK DATA] nodeById')
     return new Promise((resolve, reject) => {
       const user = mockNodes.find((n) => { n.nodeId === id })
       if (user) {
         resolve(user)
-      } else { reject() }
+      } else {
+        throw new GraphQLError('node could not be found')
+
+      }
     })
   }
   async rootsByOwner(ownerId: UserId): Promise<ListNode[]> {
+    console.log('[MOCK DATA] rootsByOwner')
     return new Promise((resolve, reject) => {
       const nodes = mockNodes.filter((n) => { n.nodeId === ownerId })
       if (nodes) {
@@ -37,12 +46,14 @@ export class MockDataWrapper {
     })
   }
   async addListNode(listNode: ListNode): Promise<ListNode | undefined> {
+    console.log('[MOCK DATA] addListNode')
     return new Promise((resolve) => {
       mockNodes.push(listNode)
       resolve(listNode)
     })
   }
   async updateListNode(listNode: ListNode): Promise<ListNode | undefined> {
+    console.log('[MOCK DATA] updateListNode')
     return new Promise((resolve) => {
       const index = mockNodes.findIndex(n => n.nodeId === listNode.nodeId)
       mockNodes[index] = listNode
@@ -65,4 +76,30 @@ const mockUsers: User[] = [{
   tagline: 'first man on the baloon',
   avatar: 'https://avatars.dicebear.com/4.1/api/avataaars/jayMan.svg'
 }]
-const mockNodes: ListNode[] = []
+
+const mockNodes: ListNode[] = [{
+  nodeId: '00000000-8035-4a9a-9d43-23f77cae3fe5',
+  title: 'mock db node 1',
+  completed: false,
+  rootNode: true,
+  subNodes: ['00000000-8035-4a9a-9a43-23f77cae3fe5'],
+  metadata: {
+    owner: 'ffffffff-ffff-ffff-ffff-fffffffffffff',
+    readers: [],
+    writers: [],
+    admins: []
+  }
+}, {
+  nodeId: '00000000-8035-4a9a-9d43-23f77cae3fe5',
+  title: 'mock db node 2',
+  completed: false,
+  notes: 'this one has notes',
+  rootNode: true,
+  subNodes: [],
+  metadata: {
+    owner: 'ffffffff-ffff-ffff-ffff-fffffffffffff',
+    readers: [],
+    writers: [],
+    admins: []
+  }
+}]

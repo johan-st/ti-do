@@ -21,6 +21,8 @@ app.get('/test', (_, res) => { res.json({ ...process.env, up: true }) })
 // Protected routes 
 app.use((req, res, next) => {
   const auth = authenticator(req)
+  console.log(auth)
+
   if (auth.isValid) {
     app.get('/login', mainRoute)
     app.use('/gql', graphqlHTTP({

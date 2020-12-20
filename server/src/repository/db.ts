@@ -44,28 +44,31 @@ export class DataWrapper {
     return user
   }
   async nodeById(id: NodeId): Promise<ListNode> {
+    console.log(10)
     const list = await this.lists?.findOne({ nodeId: id })
+    console.log(list)
     return list
-
   }
   async rootsByOwner(ownerId: UserId): Promise<ListNode[]> {
     const listNodes = await this.lists?.find({ rootNode: true, 'metadata.owner': ownerId }).toArray()
     // TODO: row below ok?
     return (listNodes as ListNode[])
   }
-  async addListNode(listNode: ListNode): Promise<ListNode | undefined> {
+  async addListNode(listNode: ListNode): Promise<ListNode> {
     const r = await this.lists?.insertOne(listNode)
     if (r?.result.ok) {
       return listNode
     }
+    throw new Error('Could not add node')
   }
-  async updateListNode(listNode: ListNode): Promise<ListNode | undefined> {
+  async updateListNode(listNode: ListNode): Promise<ListNode> {
     const r = await this.lists?.findOneAndUpdate({ nodeId: listNode.nodeId }, listNode)
     console.log(r)
-
     if (r) {
       return listNode
     }
+    throw new Error('Could not update node')
+
   }
   close(): void {
     this.client.close()
