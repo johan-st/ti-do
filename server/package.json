@@ -4,9 +4,15 @@
   "description": "",
   "main": "src/server.js",
   "scripts": {
-    "test": "jest",
+    "test": "jest /js",
+    "test-w": "jest --watchAll /js",
     "start": "nodemon js/server.js",
     "tsc": "tsc -w -p ."
+  },
+  "jest": {
+    "testPathIgnorePatterns": [
+      ".qts"
+    ]
   },
   "keywords": [],
   "author": "",

@@ -8,9 +8,10 @@ type ListNode = {
    completed: boolean
    title: string
    notes?: string
-   subNodes: NodeId[]
+   subNodes: ListNode[] | string[]
    metadata: Metadata
 };
+
 
 type ListNodeInput = {
    title: string

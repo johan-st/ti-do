@@ -19,10 +19,10 @@ const options: mongo.MongoClientOptions = {
 
 export class DataWrapper {
   private static url: string = url
-  private client: mongo.MongoClient
-  private users: mongo.Collection | undefined
-  private lists: mongo.Collection | undefined
-  private options: mongo.MongoClientOptions
+  client: mongo.MongoClient
+  users: mongo.Collection | undefined
+  lists: mongo.Collection | undefined
+  options: mongo.MongoClientOptions
   constructor() {
     this.options = options
     this.client = new MongoClient(DataWrapper.url, this.options)
@@ -39,13 +39,13 @@ export class DataWrapper {
     const user = await this.users?.findOne({ email })
     return user
   }
-  async userById(id: UserId): Promise<User> {
-    const user = await this.users?.findOne({ userId: id })
+  async userById(nodeId: UserId): Promise<User> {
+    const user = await this.users?.findOne({ userId: nodeId })
     return user
   }
-  async nodeById(id: NodeId): Promise<ListNode> {
+  async nodeById(nodeId: NodeId): Promise<ListNode> {
     console.log(10)
-    const list = await this.lists?.findOne({ nodeId: id })
+    const list = await this.lists?.findOne({ nodeId: nodeId })
     console.log(list)
     return list
   }
@@ -68,10 +68,11 @@ export class DataWrapper {
       return listNode
     }
     throw new Error('Could not update node')
-
+  }
+  deleteNode(nodeId: NodeId): void {
+    this.lists?.findOneAndDelete({ nodeId })
   }
   close(): void {
     this.client.close()
   }
-
 }

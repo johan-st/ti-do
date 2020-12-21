@@ -7,6 +7,7 @@ type Query {
 type Mutation {
   createRootNode(listNode: ListNodeInput!): ListNode
   createChildNode(listNode: ListNodeInput!, parentId: String): ListNode
+  deleteNode(nodeId:String!)
   markNodeComplete(nodeId: String!): ListNode
   markNodeIncomplete(nodeId: String!): ListNode
   addReader(nodeId: String!, userId: String!): ListNode
@@ -39,7 +40,7 @@ type ListNode {
   completed: Boolean!
   title: String!
   notes: String
-  subNodes: [String!]
+  subNodes: [ListNode!]
   metadata: Metadata!
 }
 input ListNodeInput {

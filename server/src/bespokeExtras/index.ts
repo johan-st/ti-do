@@ -1,4 +1,4 @@
 import { authenticator } from './authentication'
-import { isWriter, isReader, isAdmin, isOwner } from './authorization'
+import { canAdmin, canDelete, canRead, canWrite } from './authorization'
 
-export { authenticator, isWriter, isReader, isAdmin, isOwner }
+export { authenticator, canAdmin, canDelete, canRead, canWrite }
