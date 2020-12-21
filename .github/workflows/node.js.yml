@@ -24,4 +24,4 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
       - run: cd ./client && yarn && yarn test
-      - run: cd ./server && npm ci && npm test
+      - run: cd ./server && npm run tsc && npm ci && npm test
