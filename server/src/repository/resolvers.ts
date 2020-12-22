@@ -52,7 +52,7 @@ const createRootNode = async (args: { listNode: ListNodeInput }, context: Resolv
     writers: [],
     admins: []
   }
-  const newNode = { ...args.listNode, rootNode: true, subNodes: [], nodeId: (uuid.v4() as NodeId), completed: false, metadata }
+  const newNode: ListNode = { ...args.listNode, rootNode: true, subNodes: [], nodeId: (uuid.v4() as NodeId), completed: false, metadata }
   const result = await context.db.addListNode(newNode)
   return result
 }
