@@ -66,7 +66,7 @@ const createChildNode = async (args: { listNode: ListNodeInput, parentId: NodeId
     writers: [],
     admins: []
   }
-  const newNode = { ...args.listNode, rootNode: false, subNodes: [], nodeId: (uuid.v4() as NodeId), completed: false, metadata }
+  const newNode: ListNode = { ...args.listNode, rootNode: false, subNodes: [], nodeId: (uuid.v4() as NodeId), completed: false, metadata }
   return context.db.addListNode(newNode)
 }
 const deleteNode = async (args: { nodeId: NodeId }, context: ResolverContext): Promise<void> => {
