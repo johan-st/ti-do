@@ -77,10 +77,8 @@ export class MockDataWrapper {
     })
   }
   deleteNode(nodeId: NodeId): void {
-    console.log(mockNodes.length)
     const index = mockNodes.findIndex(n => n.nodeId === nodeId)
     mockNodes.splice(index, 1)
-    console.log(mockNodes.length)
   }
 
 
