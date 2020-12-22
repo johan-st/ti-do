@@ -8,7 +8,7 @@ type ListNode = {
    completed: boolean
    title: string
    notes?: string
-   subNodes: ListNode[] | string[]
+   subNodes: (string | ListNode)[]
    metadata: Metadata
 };
 

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
 import { root } from './resolvers'
 import { MockDataWrapper, mockUsers, mockNodes } from './mock-db'
 import { ResolverContext, ValidAuthentication, ListNode } from '../types'

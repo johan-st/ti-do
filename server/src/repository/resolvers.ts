@@ -3,7 +3,6 @@ import * as uuid from 'uuid'
 
 import { GraphQLError } from 'graphql'
 import { canAdmin, canDelete, canRead, canWrite } from '../bespokeExtras'
-import { Db } from 'mongodb'
 
 
 
@@ -20,9 +19,12 @@ const getNode = async (args: { nodeId: string }, context: ResolverContext): Prom
   const node = await context.db.nodeById(args.nodeId)
   return new Promise((resolve, reject) => {
     if (canRead(context.auth.userId, node)) {
-
-      const subNodesProms = node.subNodes.map((s): Promise<ListNode> => {
-        return context.db.nodeById(s)
+      const subNodesProms = node.subNodes.map((subNode: string | ListNode) => {
+        if (typeof subNode === 'string') {
+          return (context.db.nodeById(subNode))
+        } else {
+          return subNode
+        }
       })
       Promise.all(subNodesProms).then(subNodes => {
         resolve({ ...node, subNodes })
