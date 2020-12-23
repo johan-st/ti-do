@@ -21,57 +21,56 @@ export class DataWrapper {
   private static url: string = url
   client: mongo.MongoClient
   users: mongo.Collection | undefined
-  lists: mongo.Collection | undefined
+  nodes: mongo.Collection | undefined
   options: mongo.MongoClientOptions
   constructor() {
     this.options = options
     this.client = new MongoClient(DataWrapper.url, this.options)
-    this.client.connect()
+  }
+  async connect(): Promise<void> {
+    return this.client.connect()
       .then(() => {
         console.log('mongo connected')
         this.users = this.client.db('tido').collection('users')
-        this.lists = this.client.db('tido').collection('lists')
+        this.nodes = this.client.db('tido').collection('nodes')
       })
-      .catch(err => console.dir(err))
   }
-
   async userByEmail(email: Email): Promise<User> {
     const user = await this.users?.findOne({ email })
     return user
   }
-  async userById(nodeId: UserId): Promise<User> {
-    const user = await this.users?.findOne({ userId: nodeId })
+  async userById(userId: UserId): Promise<User> {
+    const user = await this.users?.findOne({ userId: userId })
     return user
   }
   async nodeById(nodeId: NodeId): Promise<ListNode> {
-    console.log(10)
-    const list = await this.lists?.findOne({ nodeId: nodeId })
-    console.log(list)
+    const list = await this.nodes?.findOne({ nodeId: nodeId })
     return list
   }
   async rootsByOwner(ownerId: UserId): Promise<ListNode[]> {
-    const listNodes = await this.lists?.find({ rootNode: true, 'metadata.owner': ownerId }).toArray()
+    const listNodes = await this.nodes?.find({ rootNode: true, 'metadata.owner': ownerId }).toArray()
     // TODO: row below ok?
     return (listNodes as ListNode[])
   }
   async addListNode(listNode: ListNode): Promise<ListNode> {
-    const r = await this.lists?.insertOne(listNode)
+    const r = await this.nodes?.insertOne(listNode)
     if (r?.result.ok) {
       return listNode
     }
     throw new Error('Could not add node')
   }
   async updateListNode(listNode: ListNode): Promise<ListNode> {
-    const r = await this.lists?.findOneAndUpdate({ nodeId: listNode.nodeId }, listNode)
-    console.log(r)
+    const r = await this.nodes?.replaceOne({ nodeId: listNode.nodeId }, listNode)
     if (r) {
       return listNode
     }
     throw new Error('Could not update node')
   }
-  deleteNode(nodeId: NodeId): void {
-    this.lists?.findOneAndDelete({ nodeId })
+  async deleteNode(nodeId: NodeId): Promise<boolean> {
+    const r = await this.nodes?.findOneAndDelete({ nodeId })
+    return r?.ok ? true : false
   }
+
   close(): void {
     this.client.close()
   }

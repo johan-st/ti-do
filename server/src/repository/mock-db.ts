@@ -22,12 +22,16 @@ export class MockDataWrapper {
   private static url: string = url
   client: mongo.MongoClient
   users: mongo.Collection | undefined
-  lists: mongo.Collection | undefined
+  nodes: mongo.Collection | undefined
   options: mongo.MongoClientOptions
   constructor() {
     this.options = options
     this.client = new MongoClient(MockDataWrapper.url, this.options)
-    console.log('using MOCK database')
+  }
+  async connect(): Promise<void> {
+    return new Promise((resolve) => {
+      resolve()
+    })
   }
   async userByEmail(email: Email): Promise<User> {
     return new Promise((resolve, reject) => {
@@ -76,11 +80,15 @@ export class MockDataWrapper {
       resolve(this.nodeById(listNode.nodeId))
     })
   }
-  deleteNode(nodeId: NodeId): void {
-    const index = mockNodes.findIndex(n => n.nodeId === nodeId)
-    mockNodes.splice(index, 1)
+  deleteNode(nodeId: NodeId): Promise<boolean> {
+    return new Promise((resolve, reject) => {
+      const index = mockNodes.findIndex(n => n.nodeId === nodeId)
+      if (index) {
+        mockNodes.splice(index, 1)
+        resolve(true)
+      } else { reject(new GraphQLError('could not remove node')) }
+    })
   }
-
 
   close(): void {
     console.log('Close called on mocke dataWrapper')
@@ -89,7 +97,7 @@ export class MockDataWrapper {
 
 // MOCK DATA
 export const mockUsers: User[] = [{
-  userId: 'ffffffff-ffff-ffff-ffff-ffffffffffff',
+  userId: '12345678-1234-1234-1234-123456789abc',
   fullName: 'Johan Strand',
   email: 'johan@styldesign.se',
   passwordHash: '72d0585274e2780a551e154eef8217121cf3b35ef2bd65efc9695580fdc51695576ba38f5846d039fbfa97994e0f56b048466d073e52a3c169fee63844e0c00d',
@@ -116,7 +124,7 @@ export const mockNodes: ListNode[] = [{
   rootNode: true,
   subNodes: ['00000000-0000-0000-0000-000000000001'],
   metadata: {
-    owner: 'ffffffff-ffff-ffff-ffff-ffffffffffff',
+    owner: '12345678-1234-1234-1234-123456789abc',
     readers: [],
     writers: [],
     admins: []
@@ -129,7 +137,7 @@ export const mockNodes: ListNode[] = [{
   rootNode: false,
   subNodes: ['00000000-0000-0000-0000-000000000001'],
   metadata: {
-    owner: 'ffffffff-ffff-ffff-ffff-ffffffffffff',
+    owner: '12345678-1234-1234-1234-123456789abc',
     readers: [],
     writers: [],
     admins: []

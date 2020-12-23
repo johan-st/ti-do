@@ -17,7 +17,8 @@ let db: DataWrapper
 if (process.env.MOCK_DATA) {
   db = new MockDataWrapper()
 } else { db = new DataWrapper() }
-
+db.connect()
+process.on('beforeExit', () => { db.close() })
 
 const app = express()
 // TODO:  body parser is deprecated

@@ -4,16 +4,20 @@ import * as uuid from 'uuid'
 import { GraphQLError } from 'graphql'
 import { canAdmin, canDelete, canRead, canWrite } from '../bespokeExtras'
 
-
-
 // TODO: who should be able to get a users data?
-const getUser = async (args: { userId: string }, context: ResolverContext): Promise<User> => {
+const getUser = (args: { userId: string }, context: ResolverContext): Promise<User> => {
   if (!context.auth.isValid) {
     throw new GraphQLError('getUser: Request can not be Authenticated')
   }
-  return await context.db.userById(args.userId)
+  return context.db.userById(args.userId)
 }
-
+// TODO: who should be able to get a users data?
+const getMyProfile = (args: never, context: ResolverContext): Promise<User> => {
+  if (!context.auth.isValid) {
+    throw new GraphQLError('getUser: Request can not be Authenticated')
+  }
+  return context.db.userById(context.auth.userId)
+}
 // TODO: typing
 const getNode = async (args: { nodeId: string }, context: ResolverContext): Promise<ListNode> => {
   const node = await context.db.nodeById(args.nodeId)
@@ -29,13 +33,11 @@ const getNode = async (args: { nodeId: string }, context: ResolverContext): Prom
       Promise.all(subNodesProms).then(subNodes => {
         resolve({ ...node, subNodes })
       })
-
     } else {
       reject('Not authorized too read this node')
     }
   })
 }
-
 const getRoots = async (args: unknown, context: ResolverContext): Promise<ListNode[]> => {
   if (!context.auth.isValid) {
     throw new GraphQLError('getNode: Request can not be Authenticated')
@@ -52,28 +54,69 @@ const createRootNode = async (args: { listNode: ListNodeInput }, context: Resolv
     writers: [],
     admins: []
   }
-  const newNode: ListNode = { ...args.listNode, rootNode: true, subNodes: [], nodeId: (uuid.v4() as NodeId), completed: false, metadata }
+  const newNode: ListNode = {
+    ...args.listNode,
+    rootNode: true,
+    subNodes: [],
+    nodeId: (uuid.v4() as NodeId),
+    completed: false,
+    metadata
+  }
   const result = await context.db.addListNode(newNode)
   return result
 }
-const createChildNode = async (args: { listNode: ListNodeInput, parentId: NodeId }, context: ResolverContext): Promise<ListNode | undefined> => {
+
+const createChildNode = async (
+  args: { listNode: ListNodeInput, parentId: NodeId },
+  context: ResolverContext): Promise<ListNode | undefined> => {
   if (!context.auth.isValid) {
     throw new GraphQLError('createChildNode: Request can not be Authenticated')
   }
-  const metadata: Metadata = {
-    owner: context.auth.userId,
-    readers: [],
-    writers: [],
-    admins: []
-  }
-  const newNode: ListNode = { ...args.listNode, rootNode: false, subNodes: [], nodeId: (uuid.v4() as NodeId), completed: false, metadata }
-  return context.db.addListNode(newNode)
+  const parent = await context.db.nodeById(args.parentId)
+  return new Promise((resolve, reject) => {
+    if (canWrite(context.auth.userId, parent)) {
+      const metadata: Metadata = {
+        owner: context.auth.userId,
+        readers: [],
+        writers: [],
+        admins: []
+      }
+      const newNode: ListNode = {
+        ...args.listNode,
+        rootNode: false,
+        subNodes: [],
+        nodeId: (uuid.v4() as NodeId),
+        completed: false,
+        metadata
+      }
+      const result = context.db.addListNode(newNode)
+      result.then(childNode => {
+        parent.subNodes = [...parent.subNodes, childNode.nodeId]
+        context.db.updateListNode(parent).then(() => {
+          resolve(childNode)
+        }).catch(err => {
+          reject(err)
+        })
+      })
+    }
+  })
 }
-const deleteNode = async (args: { nodeId: NodeId }, context: ResolverContext): Promise<void> => {
+
+
+const deleteNode = async (args: { nodeId: NodeId }, context: ResolverContext): Promise<ListNode | undefined> => {
   const node = await context.db.nodeById(args.nodeId)
-  if (canDelete(context.auth.userId, node)) {
-    return context.db.deleteNode(args.nodeId)
-  }
+  return new Promise((resolve, reject) => {
+    if (canDelete(context.auth.userId, node)) {
+      context.db.deleteNode(args.nodeId)
+        .then(res => {
+          if (res) {
+            resolve(node)
+          } else {
+            reject(new GraphQLError('Could not delete node'))
+          }
+        })
+    }
+  })
 }
 const markNodeComplete = async (args: { nodeId: NodeId }, context: ResolverContext): Promise<ListNode | undefined> => {
   const node = await context.db.nodeById(args.nodeId)
@@ -86,7 +129,7 @@ const markNodeIncomplete = async (args: { nodeId: NodeId }, context: ResolverCon
   const node = await context.db.nodeById(args.nodeId)
   if (canWrite(context.auth.userId, node)) {
     node.completed = false
-    return await context.db.updateListNode(node)
+    return context.db.updateListNode(node)
   }
 }
 const addReader = async (args: { nodeId: NodeId, userId: UserId }, context: ResolverContext): Promise<ListNode | undefined> => {
@@ -171,6 +214,7 @@ const transferOwnership = async (args: { nodeId: NodeId, userId: UserId }, conte
 // Root resolver
 export const root = {
   user: getUser,
+  myProfile: getMyProfile,
   node: getNode,
   rootNodes: getRoots,
   createRootNode: createRootNode,

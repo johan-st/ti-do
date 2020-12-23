@@ -1,85 +1,128 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
+import * as dotenv from 'dotenv'
+dotenv.config()
 import { root } from './resolvers'
 import { MockDataWrapper, mockUsers, mockNodes } from './mock-db'
+import { DataWrapper } from './db'
 import { ResolverContext, ValidAuthentication, ListNode } from '../types'
 
-const db = new MockDataWrapper
-const auth: ValidAuthentication = { isValid: true, userId: 'ffffffff-ffff-ffff-ffff-ffffffffffff' }
-const mockContext: ResolverContext = { auth, db }
+// const db = MockDataWrapper()
+const db = new DataWrapper()
+const auth: ValidAuthentication = { isValid: true, userId: '12345678-1234-1234-1234-123456789abc' }
+let context: ResolverContext
+beforeAll(async () => {
+  await db.connect()
+  context = { auth, db }
 
-test('should return user', async () => {
-  expect(await root.user({ userId: mockUsers[0].userId }, mockContext)).toBe(mockUsers[0])
 })
-test('should return node', async () => {
-  expect(await root.node({ nodeId: mockNodes[0].nodeId }, mockContext)).toMatchObject<ListNode>({ ...mockNodes[0], subNodes: [mockNodes[1]] })
+afterAll(() => {
+  db.close()
+  console.log('closing db connection')
 })
-test('should authorized users root nodes', async () => {
-  expect(await root.rootNodes({}, mockContext)).toMatchObject<ListNode[]>([mockNodes[0]])
+
+test.only('USER: should return user by ID if authorized', async () => {
+  // arrange
+  // act
+  const user = await root.user({ userId: auth.userId }, context)
+  // assert
+  expect.assertions(1)
+  expect(user).toHaveProperty('userId', auth.userId)
 })
-test('should return newly created ROOT node', async () => {
+
+test('NODE: should return node by ID if authorized', async () => {
+  // arrange
+  // act
+  const node = await root.node({ nodeId: mockNodes[0].nodeId }, context)
+  // assert
+  expect.assertions(1)
+  expect(node).toMatchObject<ListNode>({ ...mockNodes[0], subNodes: [mockNodes[1]] })
+})
+test('ROOTS: should return an authenticated users root nodes', async () => {
+  expect.assertions(1)
+  expect(await root.rootNodes({}, context)).toMatchObject<ListNode[]>([mockNodes[0]])
+})
+test('NEW ROOT: should create and return a root node', async () => {
+  expect.assertions(1)
   const node = await root.createRootNode({
     listNode: { title: 'created by test', notes: 'also carries notes' }
-  }, mockContext)
-  expect(node).toMatchObject<ListNode>(await root.node({ nodeId: node!.nodeId }, mockContext))
+  }, context)
+  expect(node).toMatchObject<ListNode>(await root.node({ nodeId: node!.nodeId }, context))
 })
-test('should return newly created CHILD node', async () => {
+test('NEW CHILD: should create, attatch to parent and return a child node', async () => {
+  expect.assertions(2)
+  const parentId = mockNodes[1].nodeId
   const node = await root.createChildNode({
     listNode: { title: 'test child noode', notes: 'also...' },
-    parentId: mockNodes[1].nodeId
-  }, mockContext)
-  expect(node).toMatchObject<ListNode>(await root.node({ nodeId: node!.nodeId }, mockContext))
+    parentId: parentId
+  }, context)
+  const parent = await root.node({ nodeId: parentId }, context)
+  const test = parent.subNodes.find(n => {
+    if (typeof n === 'string') {
+      return n === node?.nodeId
+    } else {
+      return n.nodeId === node?.nodeId
+    }
+  })
+  expect(test).toBeDefined()
+  expect(node).toMatchObject<ListNode>(await root.node({ nodeId: node!.nodeId }, context))
 })
-test('DELETED node should not be found', async () => {
-  const node = await root.createRootNode({ listNode: { title: 'test node destined to be deleted' } }, mockContext)
+test('DELETE: return a node that henceforth can not be found', async () => {
+  expect.assertions(2)
+  const node = await root.createRootNode({ listNode: { title: 'test node destined to be deleted' } }, context)
   const nodeId = node!.nodeId
-  await root.deleteNode({ nodeId }, mockContext)
-  // await expect(Promise.reject(new Error('octopus'))).rejects.toThrow('octopus');
-  await expect(root.node({ nodeId }, mockContext)).rejects.toThrow('failed to get node by nodeId')
+  const deleted = await await root.deleteNode({ nodeId }, context)
+  expect(deleted).toMatchObject<ListNode>(node!)
+  await expect(root.node({ nodeId }, context)).rejects.toThrow('failed to get node by nodeId')
 })
-test('should return mark and return node as completed', async () => {
-  const node = await root.markNodeComplete({ nodeId: mockNodes[0].nodeId }, mockContext)
+test('COMPLETE: should mark a node as completed and return it', async () => {
+  expect.assertions(1)
+  const node = await root.markNodeComplete({ nodeId: mockNodes[0].nodeId }, context)
   expect(node).toHaveProperty('completed', true)
 })
-test('should return mark and return node as incomplete', async () => {
-  const node = await root.markNodeIncomplete({ nodeId: mockNodes[0].nodeId }, mockContext)
+test('UNCOMPLETE: should mark a node as uncompleted and return it', async () => {
+  expect.assertions(1)
+  const node = await root.markNodeIncomplete({ nodeId: mockNodes[0].nodeId }, context)
   expect(node).toHaveProperty('completed', false)
 })
-test('should return node with user added or removed as reader when appropriate', async () => {
+test('META READER: should return node with user added or removed as reader when appropriate', async () => {
+  expect.assertions(2)
   const userId = mockUsers[0].userId
-  const node = await root.createRootNode({ listNode: { title: 'new test node' } }, mockContext)
+  const node = await root.createRootNode({ listNode: { title: 'new test node' } }, context)
   const nodeId = node!.nodeId
-
-  const added = await root.addReader({ nodeId, userId }, mockContext)
+  const added = await root.addReader({ nodeId, userId }, context)
   expect(added).toHaveProperty('metadata.readers', [userId])
-  const removed = await root.removeReader({ nodeId, userId }, mockContext)
+  const removed = await root.removeReader({ nodeId, userId }, context)
   expect(removed).toHaveProperty('metadata.readers', [])
 })
-test('should return node with user added or removed as writer when appropriate', async () => {
+test('META WRITER: should return node with user added or removed as writer when appropriate', async () => {
+  expect.assertions(2)
   const userId = mockUsers[0].userId
-  const node = await root.createRootNode({ listNode: { title: 'new test node' } }, mockContext)
+  const node = await root.createRootNode({ listNode: { title: 'new test node' } }, context)
   const nodeId = node!.nodeId
 
-  const added = await root.addWriter({ nodeId, userId }, mockContext)
+  const added = await root.addWriter({ nodeId, userId }, context)
   expect(added).toHaveProperty('metadata.writers', [userId])
-  const removed = await root.removeWriter({ nodeId, userId }, mockContext)
+  const removed = await root.removeWriter({ nodeId, userId }, context)
   expect(removed).toHaveProperty('metadata.writers', [])
 })
 
-test('should return node with user added or removed as admin when appropriate', async () => {
+test('META ADMIN: should return node with user added or removed as admin when appropriate', async () => {
+  expect.assertions(2)
   const userId = mockUsers[0].userId
-  const node = await root.createRootNode({ listNode: { title: 'new test node' } }, mockContext)
+  const node = await root.createRootNode({ listNode: { title: 'new test node' } }, context)
   const nodeId = node!.nodeId
 
-  const added = await root.addAdmin({ nodeId, userId }, mockContext)
+  const added = await root.addAdmin({ nodeId, userId }, context)
   expect(added).toHaveProperty('metadata.admins', [userId])
-  const removed = await root.removeAdmin({ nodeId, userId }, mockContext)
+  const removed = await root.removeAdmin({ nodeId, userId }, context)
   expect(removed).toHaveProperty('metadata.admins', [])
 })
 
-test('transferOwnership: should return node with new OWNER', async () => {
+test('TRANSFER OWNERSHIP: should return node with new OWNER', async () => {
+  expect.assertions(1)
   const userId = mockUsers[1].userId
-  const node = await root.createRootNode({ listNode: { title: 'new test node' } }, mockContext)
+  const node = await root.createRootNode({ listNode: { title: 'new test node' } }, context)
   const nodeId = node!.nodeId
-  const added = await root.transferOwnership({ nodeId, userId }, mockContext)
+  const added = await root.transferOwnership({ nodeId, userId }, context)
   expect(added).toHaveProperty('metadata.owner', userId)
 })
