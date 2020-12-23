@@ -20,7 +20,7 @@ afterAll(() => {
   console.log('closing db connection')
 })
 
-test.only('USER: should return user by ID if authorized', async () => {
+test('USER: should return user by ID if authorized', async () => {
   // arrange
   // act
   const user = await root.user({ userId: auth.userId }, context)

@@ -25,7 +25,7 @@ const getNode = async (args: { nodeId: string }, context: ResolverContext): Prom
     if (canRead(context.auth.userId, node)) {
       const subNodesProms = node.subNodes.map((subNode: string | ListNode) => {
         if (typeof subNode === 'string') {
-          return (context.db.nodeById(subNode))
+          return getNodeRecc({ node, subNode }, context)
         } else {
           return subNode
         }
@@ -38,6 +38,27 @@ const getNode = async (args: { nodeId: string }, context: ResolverContext): Prom
     }
   })
 }
+
+const getNodeRecc = async (args: { node: ListNode, subNode: string }, context: ResolverContext): Promise<ListNode> => {
+  const node = await context.db.nodeById(args.subNode)
+  return new Promise((resolve, reject) => {
+    if (canRead(context.auth.userId, node)) {
+      const subNodesProms = node.subNodes.map((subNode: string | ListNode) => {
+        if (typeof subNode === 'string') {
+          return getNodeRecc({ node, subNode }, context)
+        } else {
+          return subNode
+        }
+      })
+      Promise.all(subNodesProms).then(subNodes => {
+        resolve({ ...node, subNodes })
+      })
+    } else {
+      reject('Not authorized too read this node')
+    }
+  })
+}
+
 const getRoots = async (args: unknown, context: ResolverContext): Promise<ListNode[]> => {
   if (!context.auth.isValid) {
     throw new GraphQLError('getNode: Request can not be Authenticated')
