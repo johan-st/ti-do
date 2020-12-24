@@ -14,7 +14,6 @@ const options: mongo.MongoClientOptions = {
   useUnifiedTopology: true,
   auth: {
     user: mongoUser,
-
     password: mongoPass
   }
 }
@@ -91,7 +90,7 @@ export class MockDataWrapper {
   }
 
   close(): void {
-    console.log('Close called on mocke dataWrapper')
+    console.log('close() called on MOCK dataWrapper')
   }
 }
 
@@ -105,41 +104,6 @@ export const mockUsers: User[] = [{
   hashSalt: 'rYFmMHFM3oCWMETL',
   tagline: 'first man on the baloon',
   avatar: 'https://avatars.dicebear.com/4.1/api/avataaars/jayMan.svg'
-},
-{
-  userId: '0fffffff-ffff-ffff-ffff-ffffffffffff',
-  fullName: 'Strand',
-  email: 'johan@.se',
-  passwordHash: '72d0585274e2780a551e154eef8217121cf3b35ef2bd65efc9695580fdc51695576ba38f5846d039fbfa97994e0f56b048466d073e52a3c169fee63844e0c00d',
-  hashType: 'SHA512',
-  hashSalt: 'rYFmMHFM3oCWMETL',
-  tagline: 'first man on the mooooon',
-  avatar: 'https://avatars.dicebear.com/4.1/api/avataaars/manMan.svg'
 }]
 
-export const mockNodes: ListNode[] = [{
-  nodeId: '00000000-0000-0000-0000-000000000000',
-  title: 'mock db node 1',
-  completed: false,
-  rootNode: true,
-  subNodes: ['00000000-0000-0000-0000-000000000001'],
-  metadata: {
-    owner: '12345678-1234-1234-1234-123456789abc',
-    readers: [],
-    writers: [],
-    admins: []
-  }
-}, {
-  nodeId: '00000000-0000-0000-0000-000000000001',
-  title: 'mock db node 2',
-  completed: false,
-  notes: 'this one has notes',
-  rootNode: false,
-  subNodes: ['00000000-0000-0000-0000-000000000001'],
-  metadata: {
-    owner: '12345678-1234-1234-1234-123456789abc',
-    readers: [],
-    writers: [],
-    admins: []
-  }
-}]
+const mockNodes: ListNode[] = []

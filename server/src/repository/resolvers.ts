@@ -12,7 +12,7 @@ const getUser = (args: { userId: string }, context: ResolverContext): Promise<Us
   return context.db.userById(args.userId)
 }
 // TODO: who should be able to get a users data?
-const getMyProfile = (args: never, context: ResolverContext): Promise<User> => {
+const getMyProfile = (args: unknown, context: ResolverContext): Promise<User> => {
   if (!context.auth.isValid) {
     throw new GraphQLError('getUser: Request can not be Authenticated')
   }
@@ -34,7 +34,7 @@ const getNode = async (args: { nodeId: string }, context: ResolverContext): Prom
         resolve({ ...node, subNodes })
       })
     } else {
-      reject('Not authorized too read this node')
+      reject(new GraphQLError('Could not get node'))
     }
   })
 }
