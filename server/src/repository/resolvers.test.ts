@@ -3,12 +3,16 @@ import * as dotenv from 'dotenv'
 import * as uuid from 'uuid'
 dotenv.config()
 import { root } from './resolvers'
-// import { MockDataWrapper, mockUsers } from './mock-db'
+import { MockDataWrapper } from './mock-db'
 import { DataWrapper } from './db'
 import { ResolverContext, ValidAuthentication, ListNode, User } from '../types'
 
-// const db = new MockDataWrapper()
-const db = new DataWrapper()
+let db: DataWrapper
+if (process.env.MOCK_DATA) {
+  db = new MockDataWrapper()
+} else { db = new DataWrapper() }
+db.connect()
+process.on('beforeExit', () => { db.close() })
 // const auth: ValidAuthentication = { isValid: true, userId: uuid.v4() }
 const auth: ValidAuthentication = { isValid: true, userId: '12345678-1234-1234-1234-123456789abc' }
 let context: ResolverContext
