@@ -36,7 +36,7 @@ export class MockDataWrapper {
     return new Promise((resolve, reject) => {
       const user = mockUsers.find((u) => { u.email === email })
       if (user) {
-        resolve(user)
+        resolve({ ...user })
       } else { reject(new GraphQLError('failed to get user by email')) }
     })
   }
@@ -44,7 +44,7 @@ export class MockDataWrapper {
     return new Promise((resolve, reject) => {
       const user = mockUsers.find((u) => u.userId === userId)
       if (user) {
-        resolve(user)
+        resolve({ ...user })
       } else { reject(new GraphQLError('failed to get user by userId')) }
     })
   }
@@ -52,7 +52,7 @@ export class MockDataWrapper {
     return new Promise((resolve, reject) => {
       const node = mockNodes.find((n) => n.nodeId === nodeId)
       if (node) {
-        resolve(node)
+        resolve({ ...node })
       } else {
         reject(new GraphQLError('failed to get node by nodeId'))
       }

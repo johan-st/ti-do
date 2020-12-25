@@ -23,38 +23,22 @@ const getNode = async (args: { nodeId: string }, context: ResolverContext): Prom
   const node = await context.db.nodeById(args.nodeId)
   return new Promise((resolve, reject) => {
     if (canRead(context.auth.userId, node)) {
-      const subNodesProms = node.subNodes.map((subNode: string | ListNode) => {
-        if (typeof subNode === 'string') {
-          return getNodeRecc({ node, subNode }, context)
+      const subNodesProms: Promise<ListNode>[] = node.subNodes.map(async sn => {
+        if (typeof sn === 'string') {
+          return await context.db.nodeById(sn)
         } else {
-          return subNode
+          return sn
         }
       })
-      Promise.all(subNodesProms).then(subNodes => {
-        resolve({ ...node, subNodes })
-      })
-    } else {
-      reject(new GraphQLError('Could not get node'))
-    }
-  })
-}
-
-const getNodeRecc = async (args: { node: ListNode, subNode: string }, context: ResolverContext): Promise<ListNode> => {
-  const node = await context.db.nodeById(args.subNode)
-  return new Promise((resolve, reject) => {
-    if (canRead(context.auth.userId, node)) {
-      const subNodesProms = node.subNodes.map((subNode: string | ListNode) => {
-        if (typeof subNode === 'string') {
-          return getNodeRecc({ node, subNode }, context)
-        } else {
-          return subNode
+      Promise.all(subNodesProms).then(
+        subs => {
+          resolve({ ...node, subNodes: subs })
         }
-      })
-      Promise.all(subNodesProms).then(subNodes => {
-        resolve({ ...node, subNodes })
+      ).catch(err => {
+        console.log(err)
       })
     } else {
-      reject('Not authorized too read this node')
+      reject(new GraphQLError(`Could not authorize read on nodeId:${args.nodeId}`))
     }
   })
 }

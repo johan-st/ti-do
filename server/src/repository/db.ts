@@ -30,7 +30,6 @@ export class DataWrapper {
   async connect(): Promise<void> {
     return this.client.connect()
       .then(() => {
-        console.log('mongo connected')
         this.users = this.client.db('tido').collection('users')
         this.nodes = this.client.db('tido').collection('nodes')
       })
