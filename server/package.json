@@ -4,8 +4,8 @@
   "description": "",
   "main": "src/server.js",
   "scripts": {
-    "test": "jest /js",
-    "test-w": "jest --watchAll /js",
+    "test": "jest --detectOpenHandles /js",
+    "test-w": "jest --detectOpenHandles --watchAll /js",
     "start": "nodemon js/server.js",
     "tsc": "tsc  -p .",
     "tsc-w": "tsc -w -p ."
