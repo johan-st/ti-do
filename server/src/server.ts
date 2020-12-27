@@ -7,16 +7,19 @@ import { graphqlHTTP } from 'express-graphql'
 import { schema, root } from './repository'
 import { loginRoute, mainRoute } from './routes'
 import { authenticator } from './bespokeExtras'
-import { DataWrapper } from './repository'
-import { MockDataWrapper } from './repository/mock-db'
+import { DataWrapper, MockDataWrapper } from './repository'
 
 const PORT = process.env.PORT || 80
 const BUILD_DIR = process.env.BUILD_DIR || '../client/build'
 
 let db: DataWrapper
 if (process.env.MOCK_DATA) {
+  console.log('USING MOCK DB')
   db = new MockDataWrapper()
-} else { db = new DataWrapper() }
+} else {
+  console.log('USING PROD DB')
+  db = new DataWrapper()
+}
 db.connect()
 process.on('beforeExit', () => { db.close() })
 

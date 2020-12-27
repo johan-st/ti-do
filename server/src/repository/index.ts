@@ -1,5 +1,6 @@
 import { schema } from './schema'
-import { DataWrapper } from './db'
+import { DataWrapper } from './DataWrapper'
+import { MockDataWrapper } from './MockDataWrapper'
 import { root } from './resolvers'
 
-export { schema, root, DataWrapper }
+export { schema, root, DataWrapper, MockDataWrapper }

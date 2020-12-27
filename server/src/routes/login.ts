@@ -2,7 +2,7 @@ import { Router } from 'express'
 import * as sha512 from 'crypto-js/sha512'
 import { Request, Response } from 'express'
 import { DataWrapper } from '../repository'
-import { MockDataWrapper } from '../repository/mock-db'
+import { MockDataWrapper } from '../repository'
 const route = Router()
 
 // TODO: login doesn't need access to lists. Which it has in the current implementation

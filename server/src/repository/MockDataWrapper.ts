@@ -54,7 +54,7 @@ export class MockDataWrapper {
       if (node) {
         resolve({ ...node })
       } else {
-        reject(new GraphQLError('failed to get node by nodeId'))
+        reject(new GraphQLError(`Could not authorize read on nodeId:${nodeId}`))
       }
     })
   }
@@ -85,7 +85,7 @@ export class MockDataWrapper {
       if (index) {
         mockNodes.splice(index, 1)
         resolve(true)
-      } else { reject(new GraphQLError('could not remove node')) }
+      } else { reject(new GraphQLError(`Could not authorize read on nodeId:${nodeId}`)) }
     })
   }
 

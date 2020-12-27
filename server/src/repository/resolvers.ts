@@ -119,6 +119,7 @@ const deleteNode = async (args: { nodeId: NodeId }, context: ResolverContext): P
           } else {
             reject(new GraphQLError('Could not delete node'))
           }
+
         })
     }
   })
