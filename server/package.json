@@ -4,9 +4,16 @@
   "description": "",
   "main": "src/server.js",
   "scripts": {
-    "test": "jest",
+    "test": "jest --detectOpenHandles /js",
+    "test-w": "jest --detectOpenHandles --watchAll /js",
     "start": "nodemon js/server.js",
-    "tsc": "tsc -w -p ."
+    "tsc": "tsc  -p .",
+    "tsc-w": "tsc -w -p ."
+  },
+  "jest": {
+    "testPathIgnorePatterns": [
+      ".qts"
+    ]
   },
   "keywords": [],
   "author": "",
