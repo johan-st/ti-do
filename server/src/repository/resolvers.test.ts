@@ -8,7 +8,7 @@ import { DataWrapper } from './db'
 import { ResolverContext, ValidAuthentication, ListNode, User } from '../types'
 
 let db: DataWrapper
-if (process.env.MOCK_DATA) {
+if (process.env.MOCK_DATA || process.env.CI) {
   db = new MockDataWrapper()
 } else { db = new DataWrapper() }
 db.connect()
