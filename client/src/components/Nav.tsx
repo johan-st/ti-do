@@ -1,4 +1,4 @@
-import React from 'react';
+import React from 'react'
 
 const Nav = ({ children }) => {
   return (
@@ -9,7 +9,7 @@ const Nav = ({ children }) => {
         ))}
       </ul>
     </div>
-  );
-};
+  )
+}
 
-export default Nav;
+export default Nav

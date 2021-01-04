@@ -1,6 +1,6 @@
-import React from 'react';
-import Task from './Task';
-import { Droppable, Draggable } from 'react-beautiful-dnd';
+import React from 'react'
+import Task from './Task'
+import { Droppable, Draggable } from 'react-beautiful-dnd'
 
 const Tasks = ({ tasks, title, compact }) => {
   return (
@@ -28,17 +28,17 @@ const Tasks = ({ tasks, title, compact }) => {
                         snapshot={snapshot}
                         compact={compact}
                       />
-                    );
+                    )
                   }}
                 </Draggable>
               ))}
               {provided.placeholder}
             </ul>
           </section>
-        );
+        )
       }}
     </Droppable>
-  );
-};
+  )
+}
 
-export default Tasks;
+export default Tasks

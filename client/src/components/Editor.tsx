@@ -1,8 +1,8 @@
-import React from 'react';
-import Task from './Task';
-import { Droppable, Draggable } from 'react-beautiful-dnd';
-import AddTask from './AddTask';
-import DeleteTask from './DeleteTask';
+import React from 'react'
+import Task from './Task'
+import { Droppable, Draggable } from 'react-beautiful-dnd'
+import AddTask from './AddTask'
+import DeleteTask from './DeleteTask'
 
 const Editor = ({ tasks, title }) => {
   return (
@@ -37,7 +37,7 @@ const Editor = ({ tasks, title }) => {
                           snapshot={snapshot}
                           editable={true}
                         />
-                      );
+                      )
                     }}
                   </Draggable>
                 ) : null
@@ -53,10 +53,10 @@ const Editor = ({ tasks, title }) => {
               />
             </ul>
           </section>
-        );
+        )
       }}
     </Droppable>
-  );
-};
+  )
+}
 
-export default Editor;
+export default Editor

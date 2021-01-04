@@ -1,13 +1,13 @@
-import React, { useContext } from 'react';
-import { TASK_CHANGED } from '../reducer';
-import { millisToString } from '../helpers';
-import { GlobalContext } from '../GlobalContext';
+import React, { useContext } from 'react'
+import { TASK_CHANGED } from '../reducer'
+import { millisToString } from '../helpers'
+import { GlobalContext } from '../GlobalContext'
 
 const Task = ({ task, provided, snapshot, compact, editable }) => {
-  const { dispatch } = useContext(GlobalContext);
+  const { dispatch } = useContext(GlobalContext)
   const onChangeHandler = e => {
-    dispatch(TASK_CHANGED({ ...task, title: e.target.value }));
-  };
+    dispatch(TASK_CHANGED({ ...task, title: e.target.value }))
+  }
 
   if (compact) {
     return (
@@ -28,7 +28,7 @@ const Task = ({ task, provided, snapshot, compact, editable }) => {
           {task.title}
         </h2>
       </li>
-    );
+    )
   }
   if (editable) {
     return (
@@ -51,7 +51,7 @@ const Task = ({ task, provided, snapshot, compact, editable }) => {
         {task.completed ? <p>done:{millisToString(task.completed)}</p> : null}
         <div>scheduled:{task.scheduled.length} times</div>
       </li>
-    );
+    )
   }
 
   return (
@@ -72,10 +72,10 @@ const Task = ({ task, provided, snapshot, compact, editable }) => {
       {task.completed ? <p>done:{millisToString(task.completed)}</p> : null}
       <div>scheduled:{task.scheduled.length} times</div>
     </li>
-  );
-};
+  )
+}
 
-export default Task;
+export default Task
 
 //   id: 'MAYBE ID',
 //   title: 'STRING',
