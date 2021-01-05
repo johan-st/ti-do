@@ -1,16 +1,20 @@
 import React from 'react'
-import { SubNode } from '../index'
+import { SubNodeWrapper } from '../index'
 
-type RootNodeProps = {
-  node: ListNode,
+export type RootNodeProps = {
+  node: ListNode
   children?: never[]
 }
+
 const RootNode = (props: RootNodeProps): JSX.Element => {
-  return (
-    <div>
-      <SubNode item={props.node} />
-    </div>
-  )
+  const subNodes = props.node.subNodes.map((node, index) => (<SubNodeWrapper key={node.nodeId} node={node} index={index} />))
+  return (<>
+    {props.node.title}
+    {subNodes}
+
+  </>)
+
+
 }
 
-export default RootNode
+export { RootNode } 

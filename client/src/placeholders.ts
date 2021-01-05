@@ -7,13 +7,13 @@ const listPlaceholder: ListNode[] =
        subNodes:[
          {
            nodeId: 'd4ff5bdd-f6e4-47e7-847f-ae77903adf1d',
-           title: 'Task 3',
+           title: 'SubTask 1a',
            completed:false,
            subNodes:[]
          },{
            nodeId: 'd4ff5bdd-f6e4-47e7-847f-ae77903adf1e',
-           title: 'Task 4',
-           completed:false,
+           title: 'SubTask 1b',
+           completed:true,
            subNodes:[]
          }]
      },

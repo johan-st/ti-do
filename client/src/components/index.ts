@@ -1,4 +1,4 @@
-import  SubNode  from './SubNode/SubNode'
-import  RootNode  from './RootNode/RootNode'
+import  {SubNodeWrapper}  from './SubNode/SubNodeWrapper'
+import  {RootNodeWrapper}  from './RootNode/RootNodeWrapper'
 
-export {SubNode, RootNode}
+export {SubNodeWrapper, RootNodeWrapper}

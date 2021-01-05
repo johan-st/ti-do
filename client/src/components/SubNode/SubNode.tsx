@@ -1,18 +1,19 @@
 import React from 'react'
 import './SubNode.css'
 
-type ListNodeProps = {
-  item: ListNode,
+export type SubNodeProps = {
+  node: ListNode
+  index: number
   children?: never[]
 }
 
-function ListNode(props: ListNodeProps): JSX.Element {
+function SubNode(props: SubNodeProps): JSX.Element {
   return (
     <div className='item'>
-      {props.item.title}
-      <div className="item--complete">{props.item.completed ? 'DONE' : ''}</div>
+      {props.node.title}
+      <div className="item--complete">{props.node.completed ? 'DONE' : ''}</div>
     </div>
   )
 }
 
-export default ListNode
+export { SubNode }

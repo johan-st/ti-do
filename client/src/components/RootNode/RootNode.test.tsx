@@ -25,5 +25,10 @@ it('renders Tasks in state.list', () => {
   act(() => {
     render(<RootNode node={listPlaceholder[0]} />, container)
   })
-  expect(container.textContent).toContain('Task 1')
+  expect(container.textContent).toContain(listPlaceholder[0].title)
+  listPlaceholder[0].subNodes.map(n => {
+    expect(container.textContent).toContain(n.title)
+    expect(container.textContent).toContain(n.title)
+
+  })
 })
