@@ -7,10 +7,6 @@ import { useEffect } from 'react'
 
 
 function SubNodeWrapper(props: SubNodeProps): JSX.Element {
-  useEffect(() => {
-    console.log('sub wrapper')
-
-  }, [])
   return (
     <Draggable key={props.node.nodeId} draggableId={props.node.nodeId} index={props.index}>
       {(provided, snapshot) => (

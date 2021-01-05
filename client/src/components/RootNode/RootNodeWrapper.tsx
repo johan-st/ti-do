@@ -1,5 +1,5 @@
 import React from 'react'
-import { Droppable, Draggable } from 'react-beautiful-dnd'
+import { Droppable } from 'react-beautiful-dnd'
 import { RootNode, RootNodeProps } from './RootNode'
 
 const RootNodeWrapper = (props: RootNodeProps) => {
