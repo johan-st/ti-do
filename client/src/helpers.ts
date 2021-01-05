@@ -1,4 +1,4 @@
-import { useEffect } from 'react'
+import { EffectCallback, useEffect } from 'react'
 
 const millisElapsedToString = (millis: number):string => {
   let rem = Math.floor(millis / 1000)
@@ -18,8 +18,6 @@ const millisToString = (millis: number):string => {
   return date
 }
 
-const useMountEffect = (fun:()=>void):void => useEffect(fun, [])
+const useMountEffect = ((fun:EffectCallback):void => useEffect(fun, []))
 
 export {useMountEffect, millisElapsedToString, millisToString }
-
-

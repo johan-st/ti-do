@@ -10,7 +10,7 @@ const http = {
       .then(json => {
         dispatch(ACTIONS.GOT_ITEMS(json))
       })
-      .catch(err => alert(err))
+      .catch(err => console.error(err))
   },
   createItem : (title: string, dispatch: Dispatch<Action>):void => {
     fetch('http://localhost:5000/api/tasks', {
@@ -24,7 +24,7 @@ const http = {
       .then(json => {
         dispatch(ACTIONS.ITEM_ADDED(json))
       })
-      .catch(err => alert(err))
+      .catch(err => console.error(err))
   }
 }
 export { http }

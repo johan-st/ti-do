@@ -10,7 +10,7 @@ import { http } from './http'
 function App(): JSX.Element {
   const [state, dispatch] = useReducer(reducer, initialState)
   const items = state.lists.map(i => <Item key={i.id} item={i} />)
-  // useMountEffect(http.fetchAll(dispatch))
+  useMountEffect(() => { http.fetchAll(dispatch) })
 
   return (
     <GlobalContext.Provider value={{ state, dispatch }}>
