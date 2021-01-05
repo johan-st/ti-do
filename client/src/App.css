@@ -1,38 +1,120 @@
-.App {
+@import 'https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css';
+:root {
+  --clr-bg: #333333;
+  --clr-text: #ff9900;
+  --clr-accent: #ff9900;
+  --clr-muted: #aaa;
+  --clr-card: rgb(14, 14, 14);
+  --clr-disabled: #444444;
+
+  font-family: sans-serif;
+  background-color: var(--clr-bg);
+  color: var(--clr-text);
+}
+* {
+  box-sizing: border-box;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+h1,
+h2,
+h3,
+h4,
+h5 {
+  font-size: 1rem;
+}
+a {
+  color: var(--clr-accent);
+}
+.button {
+  border: none;
   text-align: center;
+  padding: 1rem;
+  font-weight: 700;
+  width: 100%;
+  background-color: var(--clr-accent);
+  color: var(--clr-card);
+  cursor: pointer;
+}
+.CTA {
+  cursor: pointer;
+  text-decoration: none;
+  text-align: center;
+  padding: 1rem;
+  font-size: 3rem;
+  font-weight: 700;
+  margin: 2rem;
+  background-color: var(--clr-accent);
+  color: var(--clr-card);
+}
+.viewer {
+  margin-top: 9rem;
+}
+.planner {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 1fr auto auto;
+}
+.add-task__button--disabled {
+  display: none;
+  background-color: var(--clr-disabled);
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+.planner__task-board {
+  grid-column: 1/3;
+  display: flex;
+  flex-direction: row;
+  margin: 0 auto;
 }
-
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-}
-
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+.task-list__list {
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+  border: 1px solid rgb(0, 0, 0);
+  min-height: 2rem;
+  width: 420px;
+  margin: 0 2rem;
 }
-
-.App-link {
-  color: #61dafb;
+/* .task-list--compact {
+  min-width: 15rem;
+  min-height: 10rem;
+} */
+.task-list--drag-source {
+  border: 1px solid blue;
 }
+.task-list--drag-destination {
+  border: 1px solid red;
+}
+.editor {
+  border: 1px solid black;
+  grid-column: 1/3;
+  margin: 0 auto;
+  width: 420px;
+}
+.hint {
+  color: var(--clr-muted);
+}
+.card {
+  border: 1px solid black;
+  background-color: var(--clr-card);
+  width: 400px;
+  margin: 5px;
+  padding: 0.5rem 1rem;
+  font-size: 1rem;
+}
+/* .card--compact {
+  margin: 5px;
+} */
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.card--blocked {
+  background-color: var(--clr-disabled);
+  color: var(--clr-muted);
+}
+.card--dragging {
+  border: 1px solid blue;
+}
+.card__header-notice {
+  font-size: 0.75em;
+  margin: 0 1rem;
 }
