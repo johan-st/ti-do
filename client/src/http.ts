@@ -1,27 +1,30 @@
-const fetchAll = (cb: (result: List[]) => void) => {
-  fetch('http://localhost:5000/api/tasks')
-    .then(raw => {
-      return raw.json()
-    })
-    .then(json => {
-      cb(json)
-    })
-    .catch(err => alert(err))
-}
+import { Dispatch } from 'react'
+import { ACTIONS } from './reducer'
 
-const createItem = (title: string, cb: (result: Item) => void) => {
-  fetch('http://localhost:5000/api/tasks', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ title }),
-  })
-    .then(raw => {
-      return raw.json()
+const http = {
+  fetchAll: (dispatch: Dispatch<Action>):void => {
+    fetch('http://localhost:5000/api/tasks')
+      .then(raw => {
+        return raw.json()
+      })
+      .then(json => {
+        dispatch(ACTIONS.GOT_ITEMS(json))
+      })
+      .catch(err => alert(err))
+  },
+  createItem : (title: string, dispatch: Dispatch<Action>):void => {
+    fetch('http://localhost:5000/api/tasks', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ title }),
     })
-    .then(json => {
-      cb(json)
-    })
-    .catch(err => alert(err))
+      .then(raw => {
+        return raw.json()
+      })
+      .then(json => {
+        dispatch(ACTIONS.ITEM_ADDED(json))
+      })
+      .catch(err => alert(err))
+  }
 }
-
-export { fetchAll, createItem }
+export { http }

@@ -1,37 +1,37 @@
 import { DropResult } from 'react-beautiful-dnd'
+import { listPlaceholder } from './placeholders'
 
-const initialState = {
-  lists: [],
+const initialState:State = {
+  lists: listPlaceholder,
+}
+const ACTIONS = {
+  DRAG_END : (res: DropResult):Action => ({
+    type: 'DRAG_END',
+    payload: res,
+  }),
+  GOT_ITEMS: (list: Item[]):Action => ({
+    type: 'GOT_ITEMS',
+    payload: list,
+  }),
+  ITEM_ADDED: (item: Item):Action => ({
+    type: 'ITEM_ADDED',
+    payload: item,
+  }),
+  ITEM_CHANGED: (task: Item):Action => ({
+    type: 'ITEM_CHANGED',
+    payload: task,
+  }),
+  DELETE_ITEM: ():Action => ({ type: 'DELETE_ITEM', payload: null })
 }
 
-const DRAG_END = (res: DropResult):Msg => ({
-  type: 'DRAG_END',
-  payload: res,
-})
-const GOT_TASKS = (list: List):Msg => ({
-  type: 'GOT_TASKS',
-  payload: list,
-})
-const TASK_ADDED = (item: Item):Msg => ({
-  type: 'TASK_ADDED',
-  payload: item,
-})
-const TASK_CHANGED = (task: Item):Msg => ({
-  type: 'TASK_CHANGED',
-  payload: task,
-})
-const DELETE_TASK = ():Msg => ({ type: 'DELETE_TASK', payload: null })
-
-const actions = {DRAG_END, GOT_TASKS, TASK_ADDED, TASK_CHANGED, DELETE_TASK}
-
-const reducer = (state: State, msg: Msg) => {
-  console.log(msg)
-  switch (msg.type) {
+const reducer = (state: State, action: Action):State => {
+  console.log(action)
+  switch (action.type) {
   case 'DRAG_END':
-    if ((msg.payload as DropResult).reason === 'CANCEL') {
+    if ((action.payload as DropResult).reason === 'CANCEL') {
       return state
     } else {
-      // const { source, destination } = (msg.payload as DropResult)
+      // const { source, destination } = (action.payload as DropResult)
       // const sourceClone = state.lists[source.droppableId]
       // const destClone = state[destination.droppableId]
       // const [movingTask] = sourceClone.splice(source.index, 1)
@@ -43,25 +43,24 @@ const reducer = (state: State, msg: Msg) => {
       return state
       // }
     }
-  case 'GOT_TASKS':
-    return { ...state, lists:msg.payload }
+  case 'GOT_ITEMS':
+    return { ...state, lists:(action.payload as Item[]) }
 
-  case 'TASK_ADDED':
-    return { ...state, editor: [msg.payload] }
+  case 'ITEM_ADDED':
+    return { ...state}
 
-  case 'TASK_CHANGED':
-    return { ...state, editor: [msg.payload] }
+  case 'ITEM_CHANGED':
+    return { ...state}
 
-  case 'DELETE_TASK':
+  case 'DELETE_ITEM':
     return {
       ...state,
-      // editor: [],
-      // deleted: [...state.deleted, state.editor],
     }
 
   default:
+    console.log('UNKNOWN ACTION')
     return state
   }
 }
 
-export { initialState, reducer, actions }
+export { initialState, reducer, ACTIONS } 

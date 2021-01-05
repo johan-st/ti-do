@@ -1,25 +1,25 @@
 import './App.css'
 import React, { useReducer } from 'react'
+import { GlobalContext } from './GlobalCntext'
 import { DragDropContext } from 'react-beautiful-dnd'
+import { reducer, initialState, ACTIONS } from './reducer'
+import { Item } from './components'
+import { useMountEffect } from './helpers'
+import { http } from './http'
 
-import { GlobalContext } from './GlobalContext'
-import { reducer, initialState, actions } from './reducer'
-import Viewer from './components/Viewer'
-import Planner from './components/Planner'
-
-function App() {
+function App(): JSX.Element {
   const [state, dispatch] = useReducer(reducer, initialState)
+  const items = state.lists.map(i => <Item key={i.id} item={i} />)
+  // useMountEffect(http.fetchAll(dispatch))
+
   return (
     <GlobalContext.Provider value={{ state, dispatch }}>
-      <DragDropContext onDragEnd={res => dispatch(actions.DRAG_END(res))}>
+      <DragDropContext onDragEnd={res => dispatch(ACTIONS.DRAG_END(res))}>
         <div className="App">
-          <Viewer>
-            <Planner />
-          </Viewer>
+          {items}
         </div>
       </DragDropContext>
-    </GlobalContext.Provider>
+    </GlobalContext.Provider >
   )
 }
-
 export default App
