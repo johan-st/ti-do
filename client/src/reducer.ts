@@ -9,19 +9,19 @@ const ACTIONS = {
     type: 'DRAG_END',
     payload: res,
   }),
-  GOT_ITEMS: (list: Item[]):Action => ({
+  GOT_ITEMS: (list: Node[]):Action => ({
     type: 'GOT_ITEMS',
     payload: list,
   }),
-  ITEM_ADDED: (item: Item):Action => ({
+  ITEM_ADDED: (item: Node):Action => ({
     type: 'ITEM_ADDED',
     payload: item,
   }),
-  ITEM_CHANGED: (task: Item):Action => ({
+  ITEM_CHANGED: (task: Node):Action => ({
     type: 'ITEM_CHANGED',
     payload: task,
   }),
-  DELETE_ITEM: ():Action => ({ type: 'DELETE_ITEM', payload: null })
+  DELETE_ITEM: (id:NodeId):Action => ({ type: 'DELETE_ITEM', payload: id })
 }
 
 const reducer = (state: State, action: Action):State => {
@@ -44,7 +44,7 @@ const reducer = (state: State, action: Action):State => {
       // }
     }
   case 'GOT_ITEMS':
-    return { ...state, lists:(action.payload as Item[]) }
+    return { ...state, lists:(action.payload as ListNode[]) }
 
   case 'ITEM_ADDED':
     return { ...state}

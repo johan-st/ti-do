@@ -1,13 +1,17 @@
 
 type State = {
-  lists: Item[]
+  lists: ListNode[]
 }
 
-type Item = {
-  id: string,
-  text: string,
-  created: Date,
-  completed?: Date
-}
+type ListNode = {
+   nodeId: NodeId
+   completed: boolean
+   title: string
+   notes?: string
+   subNodes: ListNode[]
+};
+
+
+type NodeId = string
 
 type Action = { type: string, payload: unknown }
