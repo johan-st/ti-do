@@ -9,7 +9,7 @@ import { http } from './http'
 
 function App(): JSX.Element {
   const [state, dispatch] = useReducer(reducer, initialState)
-  useMountEffect(() => { http.fetchAll(dispatch) })
+  useMountEffect(() => { http.fetchRoots(dispatch) })
 
   return (
     <GlobalContext.Provider value={{ state, dispatch }}>

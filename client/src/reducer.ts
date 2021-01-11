@@ -40,7 +40,7 @@ const reducer = (state: State, action: Action):State => {
     return { ...state, lists:(action.payload as ListNode[]) }
 
   case 'ITEM_ADDED':
-    return { ...state}
+    return { ...state, lists: [...state.lists, (action.payload as ListNode)]}
 
   case 'ITEM_CHANGED':
     return { ...state}
