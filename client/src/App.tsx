@@ -15,13 +15,13 @@ function App(): JSX.Element {
     <GlobalContext.Provider value={{ state, dispatch }}>
       <DragDropContext onDragEnd={res => dispatch(ACTIONS.DRAG_END(res))}>
         <Droppable droppableId={'rootsDroppable'}>
-          {(provided, snapshot) => (
+          {(provided) => (
             < div
               {...provided.droppableProps}
               ref={provided.innerRef}>
               {state.lists.map((node, index) => (
                 <Draggable key={node.nodeId} draggableId={node.nodeId} index={index}>
-                  {(provided, snapshot) => (
+                  {(provided) => (
                     <div
                       ref={provided.innerRef}
                       {...provided.draggableProps}
@@ -33,7 +33,8 @@ function App(): JSX.Element {
                 </Draggable>
               ))}
               {provided.placeholder}
-            </div>)}
+            </div>
+          )}
         </Droppable>
       </DragDropContext>
     </GlobalContext.Provider >)

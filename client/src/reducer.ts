@@ -21,7 +21,9 @@ const ACTIONS = {
     type: 'ITEM_CHANGED',
     payload: task,
   }),
-  DELETE_ITEM: (id:NodeId):Action => ({ type: 'DELETE_ITEM', payload: id })
+  DELETE_ITEM: (id:NodeId):Action => ({ 
+    type: 'DELETE_ITEM', payload: id 
+  })
 }
 
 const reducer = (state: State, action: Action):State => {
@@ -31,17 +33,8 @@ const reducer = (state: State, action: Action):State => {
     if ((action.payload as DropResult).reason === 'CANCEL') {
       return state
     } else {
-      // const { source, destination } = (action.payload as DropResult)
-      // const sourceClone = state.lists[source.droppableId]
-      // const destClone = state[destination.droppableId]
-      // const [movingTask] = sourceClone.splice(source.index, 1)
-      // destClone.splice(destination.index, 0, movingTask)
-      // return {
-      //   ...state,
-      //   [source.droppableId]: sourceClone,
-      //   [destination.droppableId]: destClone,
+      
       return state
-      // }
     }
   case 'GOT_ITEMS':
     return { ...state, lists:(action.payload as ListNode[]) }

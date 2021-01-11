@@ -3,11 +3,13 @@ dotenv.config()
 import * as express from 'express'
 import * as bodyParser from 'body-parser'
 import * as cookieParser from 'cookie-parser'
+import cors = require('cors')
 import { graphqlHTTP } from 'express-graphql'
 import { schema, root } from './repository'
 import { loginRoute, mainRoute } from './routes'
 import { authenticator } from './bespokeExtras'
 import { DataWrapper, MockDataWrapper } from './repository'
+
 
 const PORT = process.env.PORT || 80
 const BUILD_DIR = process.env.BUILD_DIR || '../client/build'
@@ -24,6 +26,8 @@ db.connect()
 process.on('beforeExit', () => { db.close() })
 
 const app = express()
+// TODO: be more selecvtive when handling cors
+app.use(cors())
 // TODO:  body parser is deprecated
 app.use(bodyParser.json())
 app.use(cookieParser())
