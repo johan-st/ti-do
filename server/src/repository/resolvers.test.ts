@@ -13,7 +13,8 @@ process.on('beforeExit', () => { db.close() })
 // const auth: ValidAuthentication = { isValid: true, userId: uuid.v4() }
 const auth: ValidAuthentication = { isValid: true, userId: '12345678-1234-1234-1234-123456789abc' }
 let context: ResolverContext
-let values: undefined | {
+let values: undefined | 
+{
   nodes: ListNode[],
   fullRoot: ListNode,
   user: User
@@ -29,6 +30,8 @@ beforeAll(async () => {
   }
   await db.connect()
   context = { auth, db }
+  console.log(context.auth)
+  
   const rootNode = await root.createRootNode({
     listNode: { title: 'ROOT', notes: 'should not persist after test is completed' }
   }, context)
@@ -37,6 +40,7 @@ beforeAll(async () => {
     listNode: { title: 'LEAF', notes: 'should not persist after test is completed' },
     parentId: rootNode.nodeId
   }, context)
+  
   const childNode2 = await root.createChildNode({
     listNode: { title: 'LEAF', notes: 'should not persist after test is completed' },
     parentId: rootNode.nodeId
@@ -52,7 +56,11 @@ afterAll(async () => {
   console.log('cleanup deletedCount:', res?.deletedCount)
   db.close()
 })
+// afterEach(async () => {
+//   const res = await context.db.nodes?.find({}).toArray()
+//   console.log(res)
 
+// })
 test('NEW ROOT: should create and return a root node', async () => {
   // [ASSERT]
   // TODO: these can be better
@@ -177,4 +185,6 @@ test('TRANSFER OWNERSHIP: should return node with new OWNER', async () => {
   // [ASSERT]
   expect.assertions(1)
   expect(postTransfer).toMatchObject<ListNode>(newOwnerRoots[0])
+  await context.db.nodes?.deleteMany({ 'metadata.owner': newOwner.userId })
+
 })

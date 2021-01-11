@@ -31,11 +31,11 @@ const reducer = (state: State, action: Action):State => {
   switch (action.type) {
   case 'DRAG_END':
     if ((action.payload as DropResult).reason === 'CANCEL') {
-      return state
+      return { ...state}
     } else {
-      
-      return state
+      return { ...state}
     }
+
   case 'GOT_ITEMS':
     return { ...state, lists:(action.payload as ListNode[]) }
 
@@ -46,13 +46,10 @@ const reducer = (state: State, action: Action):State => {
     return { ...state}
 
   case 'DELETE_ITEM':
-    return {
-      ...state,
-    }
+    return {...state}
 
   default:
-    console.log('UNKNOWN ACTION')
-    return state
+    throw Error('UNKNOWN ACTION')
   }
 }
 
