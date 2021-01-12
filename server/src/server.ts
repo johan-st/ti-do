@@ -27,7 +27,8 @@ process.on('beforeExit', () => { db.close() })
 
 const app = express()
 // TODO: be more selecvtive when handling cors
-app.use(cors())
+// TODO: typechecking for cors module
+app.use(cors() as express.RequestHandler)
 // TODO:  body parser is deprecated
 app.use(bodyParser.json())
 app.use(cookieParser())
