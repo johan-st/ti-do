@@ -1,6 +1,7 @@
 
 type State = {
   lists: ListNode[]
+  editor: ListNode | null
 }
 
 type ListNode = {
@@ -14,4 +15,5 @@ type ListNode = {
 
 type NodeId = string
 
-type Action = { type: string, payload: unknown }
+type Msg = { type: string, payload: unknown }
+type Cmd = (a?:unknown ,b?:unknown ,c?:unknown, d?:unknown) => void
