@@ -1,32 +1,33 @@
 import { DropResult } from 'react-beautiful-dnd'
-import { listPlaceholder } from './placeholders'
+// import { listPlaceholder } from './placeholders'
 
 const initialState:State = {
-  lists: listPlaceholder,
+  lists: [],
+  editor: null
 }
-const ACTIONS = {
-  DRAG_END : (res: DropResult):Action => ({
+const Msg = {
+  DRAG_END : (res: DropResult):Msg => ({
     type: 'DRAG_END',
     payload: res,
   }),
-  GOT_ITEMS: (list: Node[]):Action => ({
+  GOT_ITEMS: (list: ListNode[]):Msg => ({
     type: 'GOT_ITEMS',
     payload: list,
   }),
-  ITEM_ADDED: (item: Node):Action => ({
+  ITEM_ADDED: (item: ListNode):Msg => ({
     type: 'ITEM_ADDED',
     payload: item,
   }),
-  ITEM_CHANGED: (task: Node):Action => ({
+  ITEM_CHANGED: (task: ListNode):Msg => ({
     type: 'ITEM_CHANGED',
     payload: task,
   }),
-  DELETE_ITEM: (id:NodeId):Action => ({ 
+  DELETE_ITEM: (id:NodeId):Msg => ({ 
     type: 'DELETE_ITEM', payload: id 
   })
 }
 
-const reducer = (state: State, action: Action):State => {
+const reducer = (state: State, action: Msg):State => {
   console.log(action)
   switch (action.type) {
   case 'DRAG_END':
@@ -40,7 +41,7 @@ const reducer = (state: State, action: Action):State => {
     return { ...state, lists:(action.payload as ListNode[]) }
 
   case 'ITEM_ADDED':
-    return { ...state, lists: [...state.lists, (action.payload as ListNode)]}
+    return { ...state, lists: [...state.lists, action.payload as ListNode]}
 
   case 'ITEM_CHANGED':
     return { ...state}
@@ -49,8 +50,8 @@ const reducer = (state: State, action: Action):State => {
     return {...state}
 
   default:
-    throw Error('UNKNOWN ACTION')
+    throw new Error('UNKNOWN ACTION')
   }
 }
 
-export { initialState, reducer, ACTIONS } 
+export { initialState, reducer, Msg } 

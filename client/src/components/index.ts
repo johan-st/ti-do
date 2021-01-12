@@ -1,5 +1,6 @@
-import  {SubNodeWrapper}  from './SubNode/SubNodeWrapper'
 import  {RootNodeWrapper}  from './RootNode/RootNodeWrapper'
-import {Editor} from './Editor/Editor'
+import  {SubNodeWrapper}  from './SubNode/SubNodeWrapper'
+import  {SubNode}  from './SubNode/SubNode'
+import  {Editor}  from './Editor/Editor'
 
-export {SubNodeWrapper, RootNodeWrapper, Editor}
+export {SubNode, SubNodeWrapper, RootNodeWrapper, Editor}

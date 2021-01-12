@@ -31,7 +31,8 @@ app.use(cors())
 // TODO:  body parser is deprecated
 app.use(bodyParser.json())
 app.use(cookieParser())
-app.get('/test', (_, res) => { res.json({ ...process.env, up: true }) })
+app.get('/test', (req, res) => { res.json(req) })
+app.post('/test', (req, res) => { res.json(req.body) })
 
 // Protected routes 
 app.use((req, res, next) => {
