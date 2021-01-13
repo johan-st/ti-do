@@ -22,8 +22,8 @@ const Msg = {
     type: 'ITEM_CHANGED',
     payload: task,
   }),
-  DELETE_ITEM: (id:NodeId):Msg => ({ 
-    type: 'DELETE_ITEM', payload: id 
+  ITEM_DELETED: (id:NodeId):Msg => ({ 
+    type: 'ITEM_DELETED', payload: id 
   })
 }
 
@@ -31,7 +31,8 @@ const reducer = (state: State, action: Msg):State => {
   console.log(action)
   switch (action.type) {
   case 'DRAG_END':
-    return dragEndHandler(action.payload as DropResult, state)
+    return {...state}
+    // return dragEndHandler(action.payload as DropResult, state)
   
   case 'GOT_ITEMS':
     return { ...state, lists:(action.payload as ListNode[]) }
@@ -42,7 +43,7 @@ const reducer = (state: State, action: Msg):State => {
   case 'ITEM_CHANGED':
     return { ...state}
 
-  case 'DELETE_ITEM':
+  case 'ITEM_DELETED':
     return {...state}
 
   default:
@@ -50,26 +51,26 @@ const reducer = (state: State, action: Msg):State => {
   }
 }
 
-const dragEndHandler = (dropResult:DropResult, state:State):State=>{
-  const  {source, destination, draggableId, reason} = dropResult
-  const newState = {...state}
-  if (reason === 'CANCEL'
-    || source.droppableId === destination?.droppableId){
-    return newState
-  } 
-  if(source.droppableId === destination?.droppableId){
-    return newState
-  }
-  if (destination?.droppableId === 'rootDroppable') {
-    const  indexList = state.lists
-    return  {...state}
-  }
-  return  newState
-}
+// const dragEndHandler = (dropResult:DropResult, state:State):State=>{
+//   const  {source, destination, draggableId, reason} = dropResult
+//   const newState = {...state}
+//   if (reason === 'CANCEL'
+//     || source.droppableId === destination?.droppableId){
+//     return newState
+//   } 
+//   if(source.droppableId === destination?.droppableId){
+//     return newState
+//   }
+//   if (destination?.droppableId === 'rootDroppable') {
+//     const  indexList = state.lists
+//     return  {...state}
+//   }
+//   return  newState
+// }
 
-const findRecc=(n:ListNode, m:NodeId, index:number, indexList:number[]) =>{
-  if (n.nodeId === m) {
-    return indexList
-  }
-}
+// const findRecc=(n:ListNode, m:NodeId, index:number, indexList:number[]) =>{
+//   if (n.nodeId === m) {
+//     return indexList
+//   }
+// }
 export { initialState, reducer, Msg } 
