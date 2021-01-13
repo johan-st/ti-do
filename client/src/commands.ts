@@ -70,7 +70,7 @@ const  Cmd = {
           throw new Error(json)
           
         }
-        dispatch(Msg.ITEM_ADDED(json))
+        dispatch(Msg.ITEM_ADDED(json, null))
       })
       .catch(err => console.error(err))
   }

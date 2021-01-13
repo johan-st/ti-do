@@ -14,9 +14,9 @@ const Msg = {
     type: 'GOT_ITEMS',
     payload: list,
   }),
-  ITEM_ADDED: (item: ListNode):Msg => ({
+  ITEM_ADDED: (item: ListNode, parrent:ListNode | null):Msg => ({
     type: 'ITEM_ADDED',
-    payload: item,
+    payload:{item, parrent},
   }),
   ITEM_CHANGED: (task: ListNode):Msg => ({
     type: 'ITEM_CHANGED',
@@ -26,7 +26,10 @@ const Msg = {
     type: 'ITEM_DELETED', payload: id 
   })
 }
-
+type ADDED_PAYLOAD={
+  item:ListNode,
+  parrent:ListNode|null
+}
 const reducer = (state: State, action: Msg):State => {
   console.log(action)
   switch (action.type) {
@@ -38,7 +41,11 @@ const reducer = (state: State, action: Msg):State => {
     return { ...state, lists:(action.payload as ListNode[]) }
 
   case 'ITEM_ADDED':
-    return { ...state, lists: [...state.lists, action.payload as ListNode]}
+    if ((action.payload as ADDED_PAYLOAD).parrent=== null){
+      return { ...state, lists: [...state.lists, (action.payload as ADDED_PAYLOAD).item]}
+    }
+    
+    return {...state}
 
   case 'ITEM_CHANGED':
     return { ...state}
