@@ -217,6 +217,7 @@ future: use as my daily planner and tinker away :happy:
     - medium payoff
   - notes
     - _socket or webrtc datachannel_
+    - _GraphQL Subscriptions?_
 - I as a user can create multiple to-do lists where each list has it's unique URL that I canshare with my friends - so that I could have separate to do lists for my groceries and workrelated tasks
   - **decision**
     - medium effort
