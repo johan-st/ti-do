@@ -51,7 +51,7 @@ const  Cmd = {
         { query: 'mutation createRootNode($title:String!) {  createRootNode(listNode:{title:$title}) { nodeId title notes subNodes{ nodeId }  } }',
           variables: {title}})
       : JSON.stringify(
-        { query: 'mutation createRootNode($title:String!) {  createSubNode(listNode:{title:$title}) { nodeId title notes subNodes{ nodeId }  } }',
+        { query: 'mutation createChildNode($title:String!) {  createChildNode(listNode:{title:$title}) { nodeId title notes subNodes{ nodeId }  } }',
           variables: {title}})
 
     fetch('http://localhost:3001/gql', {

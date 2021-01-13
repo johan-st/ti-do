@@ -31,12 +31,8 @@ const reducer = (state: State, action: Msg):State => {
   console.log(action)
   switch (action.type) {
   case 'DRAG_END':
-    if ((action.payload as DropResult).reason === 'CANCEL') {
-      return { ...state}
-    } else {
-      return { ...state}
-    }
-
+    return dragEndHandler(action.payload as DropResult, state)
+  
   case 'GOT_ITEMS':
     return { ...state, lists:(action.payload as ListNode[]) }
 
@@ -54,4 +50,26 @@ const reducer = (state: State, action: Msg):State => {
   }
 }
 
+const dragEndHandler = (dropResult:DropResult, state:State):State=>{
+  const  {source, destination, draggableId, reason} = dropResult
+  const newState = {...state}
+  if (reason === 'CANCEL'
+    || source.droppableId === destination?.droppableId){
+    return newState
+  } 
+  if(source.droppableId === destination?.droppableId){
+    return newState
+  }
+  if (destination?.droppableId === 'rootDroppable') {
+    const  indexList = state.lists
+    return  {...state}
+  }
+  return  newState
+}
+
+const findRecc=(n:ListNode, m:NodeId, index:number, indexList:number[]) =>{
+  if (n.nodeId === m) {
+    return indexList
+  }
+}
 export { initialState, reducer, Msg } 

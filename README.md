@@ -2,13 +2,16 @@
 # tido
 
 my experiences so far:
- - improved knowledge in typescript
- - improved knowledge in graphql, schemas, queries and mutations
- - explored new patterns in regards to security
- - explored CI-patterns
- - improved holistic view on Dev(Sec)Ops
- - explored testable dev-patterns
- - explorerd decision space in regards to functional vs OO. (where to use which)
+  - Drag n Drop has proven to take a lot of time setting up
+  - first time using material ui
+  - learned to plan more time when deeling with new tech
+  - improved knowledge in typescript
+  - improved knowledge in graphql, schemas, queries and mutations
+  - explored patterns in regards to security
+  - explored CI-patterns
+  - improved holistic view on Dev(Sec)Ops
+  - explored testable dev-patterns
+  - explorerd decision space in regards to functional vs OO. (where to use which)
 
 ### dev notes:  
 **run from project root folder**  
@@ -88,27 +91,15 @@ heroku container:push -a ti-do web && heroku container:release -a ti-do web
   - webRTC implementation time
   - GraphQL implementation time
   - Typescript learning curve
- 
-# PROGRESS
-timeline:  
-16:th finnish planning & setup. Start on graphql  
-17:th graphql resolvers (incl. mutations, db)  
-18:th Cookie jwt w/  permissions. start client  
-19:th -- Break --
-20:th client (single user)   
-21:th client (multi user)  
-22:st deployment and clean-up  
-23:nd evaluate work  
-future: use as my daily planner and tinker away :happy:
-
 
 ### doing
-  - get auth info to resolver
-  - JWT cookie auth
-  - Mutators
+  - basic FE
 
 ### next up
+  - JWT cookie auth
   - Wireframe frontend
+  - get auth info to resolver
+  - Mutators
 
 ### done
 - create postman tests of GraphQL endpoint
