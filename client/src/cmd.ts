@@ -3,7 +3,7 @@ import { Msg } from './reducer'
 import { ListNodeArraySchema } from './Joi'
 
 
-const  Cmd = {
+const  CMD = {
   fetchRoots:  (dispatch: Dispatch<Msg>):void => {
     fetch('http://localhost:3001/gql',
       {method:'POST',
@@ -40,7 +40,7 @@ const  Cmd = {
             .catch(err=>{console.error(err)}
             )}
         else {
-          Cmd.createNode('my tidos',true, dispatch)}
+          CMD.createNode('my tidos',true, dispatch)}
       })
       .catch(err => console.error(err))
   },
@@ -51,7 +51,7 @@ const  Cmd = {
         { query: 'mutation createRootNode($title:String!) {  createRootNode(listNode:{title:$title}) { nodeId title notes subNodes{ nodeId }  } }',
           variables: {title}})
       : JSON.stringify(
-        { query: 'mutation createRootNode($title:String!) {  createSubNode(listNode:{title:$title}) { nodeId title notes subNodes{ nodeId }  } }',
+        { query: 'mutation createChildNode($title:String!) {  createChildNode(listNode:{title:$title}) { nodeId title notes subNodes{ nodeId }  } }',
           variables: {title}})
 
     fetch('http://localhost:3001/gql', {
@@ -70,9 +70,34 @@ const  Cmd = {
           throw new Error(json)
           
         }
-        dispatch(Msg.ITEM_ADDED(json))
+        dispatch(Msg.ITEM_ADDED(json, null))
+      })
+      .catch(err => console.error(err))
+  },
+  updateNode : (newNode:ListNode ,dispatch: Dispatch<Msg>):void => {
+    const body =  JSON.stringify(
+      { query: 'mutation updateNode($node:String!) {  updateNode(listNode:{node:$node}) { nodeId title notes subNodes{ nodeId }  } }',
+        variables: {newNode}})
+
+    fetch('http://localhost:3001/gql', {
+      method: 'POST',
+      headers: { 
+        'Content-Type': 'application/json',
+        'Accepts': 'application/json'
+      },      
+      body
+    })
+      .then(raw => {
+        return raw.json()
+      })
+      .then(json => {
+        if (json.errors) {
+          throw new Error(json)
+          
+        }
+        dispatch(Msg.ITEM_ADDED(json, null))
       })
       .catch(err => console.error(err))
   }
 }
-export { Cmd }
+export { CMD  }

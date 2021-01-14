@@ -109,6 +109,9 @@ const createChildNode = async (
 
 
 const deleteNode = async (args: { nodeId: NodeId }, context: ResolverContext): Promise<ListNode | undefined> => {
+  if (!context.auth.isValid) {
+    throw new GraphQLError('deleteNode: Request can not be Authenticated')
+  }
   const node = await context.db.nodeById(args.nodeId)
   return new Promise((resolve, reject) => {
     if (canDelete(context.auth.userId, node)) {
@@ -123,6 +126,16 @@ const deleteNode = async (args: { nodeId: NodeId }, context: ResolverContext): P
         })
     }
   })
+}
+const updateNode = async (args: {node: ListNode }, context: ResolverContext): Promise<ListNode | undefined> => {
+  if (!context.auth.isValid) {
+    throw new GraphQLError('updateNode: Request can not be Authenticated')
+  }
+  const node = await context.db.nodeById(args.node.nodeId)
+  if (canWrite(context.auth.userId, node)) {
+    // TODO: guard against other changes?
+    return context.db.updateListNode({...args.node, metadata:node.metadata})
+  }
 }
 const markNodeComplete = async (args: { nodeId: NodeId }, context: ResolverContext): Promise<ListNode | undefined> => {
   const node = await context.db.nodeById(args.nodeId)
@@ -223,16 +236,17 @@ export const root = {
   myProfile: getMyProfile,
   node: getNode,
   rootNodes: getRoots,
-  createRootNode: createRootNode,
-  createChildNode: createChildNode,
-  deleteNode: deleteNode,
-  markNodeComplete: markNodeComplete,
-  markNodeIncomplete: markNodeIncomplete,
-  addReader: addReader,
-  removeReader: removeReader,
-  addWriter: addWriter,
-  removeWriter: removeWriter,
-  addAdmin: addAdmin,
-  removeAdmin: removeAdmin,
-  transferOwnership: transferOwnership
+  updateNode,
+  createRootNode,
+  createChildNode,
+  deleteNode,
+  markNodeComplete,
+  markNodeIncomplete,
+  addReader,
+  removeReader,
+  addWriter,
+  removeWriter,
+  addAdmin,
+  removeAdmin,
+  transferOwnership
 }

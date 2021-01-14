@@ -10,6 +10,7 @@ type ListNode = {
    title: string
    notes?: string
    subNodes: ListNode[]
+   active:boolean
 };
 
 
