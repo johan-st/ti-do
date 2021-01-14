@@ -5,9 +5,10 @@ type Query {
   rootNodes: [ListNode]
 }
 type Mutation {
-  createRootNode(listNode: ListNodeInput!): ListNode
-  createChildNode(listNode: ListNodeInput!, parentId: String): ListNode
+  createRootNode(listNode: createListNodeInput!): ListNode
+  createChildNode(listNode: createListNodeInput!, parentId: String): ListNode
   deleteNode(nodeId: String!): ListNode
+  updateNode(node: ListNodeInput!): ListNode
   markNodeComplete(nodeId: String!): ListNode
   markNodeIncomplete(nodeId: String!): ListNode
   addReader(nodeId: String!, userId: String!): ListNode
@@ -43,11 +44,25 @@ type ListNode {
   subNodes: [ListNode!]
   metadata: Metadata!
 }
-input ListNodeInput {
+input createListNodeInput {
   title: String!
   notes: String
 }
+input ListNodeInput {
+  nodeId: String!
+  completed: Boolean!
+  title: String!
+  notes: String
+  subNodes: [ListNodeInput!]
+  metadata: MetadataInput!
+}
 type Metadata {
+  owner: String!
+  readers: [String!]!
+  writers: [String!]!
+  admins: [String!]!
+}
+input MetadataInput {
   owner: String!
   readers: [String!]!
   writers: [String!]!

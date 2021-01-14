@@ -31,7 +31,7 @@ type ADDED_PAYLOAD={
   parrent:ListNode|null
 }
 const reducer = (state: State, action: Msg):State => {
-  console.log(action)
+  // console.log(action)
   switch (action.type) {
   case 'DRAG_END':
     return {...state}
@@ -41,15 +41,42 @@ const reducer = (state: State, action: Msg):State => {
     return { ...state, lists:(action.payload as ListNode[]) }
 
   case 'ITEM_ADDED':
-    if ((action.payload as ADDED_PAYLOAD).parrent=== null){
-      return { ...state, lists: [...state.lists, (action.payload as ADDED_PAYLOAD).item]}
+  {
+    const {parrent, item} = (action.payload as ADDED_PAYLOAD)
+    //TODO: no recc structure yet
+    if (parrent === null){
+      return { ...state, 
+        lists: [...state.lists,{...item, active:true}], 
+        editor:item
+      }
     }
+    return { ...state, lists: state.lists.map((n) => {
+      if (n.nodeId === parrent.nodeId) {
+        return {...n, subNodes: [...n.subNodes, item]}
+      }
+      return n
+    })}
     
-    return {...state}
-
+  }
   case 'ITEM_CHANGED':
-    return { ...state}
-
+  {
+    const item = action.payload as ListNode
+    const newState = {
+      ...state, 
+      lists: state.lists.map(root=>{
+        if (root.nodeId === item.nodeId) {
+          return item
+        }
+        return {...root, subNodes:root.subNodes.map(sub=>{
+          if (sub.nodeId === item.nodeId) {
+            return item
+          }
+          return sub
+        })}
+      })}
+    return newState
+  
+  }
   case 'ITEM_DELETED':
     return {...state}
 

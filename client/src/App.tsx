@@ -3,9 +3,10 @@ import { DragDropContext, Draggable, Droppable } from 'react-beautiful-dnd'
 import { reducer, initialState, Msg } from './reducer'
 import { RootNodeWrapper, Editor, Copyright } from './components'
 import { useMountEffect } from './helpers'
-import { Cmd } from './commands'
+import { CMD } from './cmd'
 import { ThemeProvider } from 'styled-components'
 import { Grid } from '@material-ui/core'
+// import { listPlaceholder } from './placeholders'
 
 
 const theme = {
@@ -25,15 +26,16 @@ const theme = {
 
 const GlobalContext = createContext(
   {
+    // state: { lists: listPlaceholder },
     state: { lists: [] as ListNode[] },
     dispatch: (value: Msg) => {
-      console.error('dispatch was passed ' + value + 'but is itself undefined')
+      console.error('dispatch was passed ' + value + 'but is itself, undefined')
     }
   })
 
 function App(): JSX.Element {
   const [state, dispatch] = useReducer(reducer, initialState)
-  useMountEffect(() => { Cmd.fetchRoots(dispatch) })
+  useMountEffect(() => { CMD.fetchRoots(dispatch) })
   return (
     <ThemeProvider theme={theme}>
       <GlobalContext.Provider value={{ state, dispatch }}>

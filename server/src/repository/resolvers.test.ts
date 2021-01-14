@@ -121,6 +121,15 @@ test('ROOTS: should return an authenticated users root nodes', async () => {
   expect(myRoots).toMatchObject<ListNode[]>([expectedRootWithChildren])
 })
 
+test('UPDATE: should replace node', async () => {
+  // [ACT]
+  const updatedNode = { ...values.nodes[0], notes:'updated node notes' }
+  const result = await root.updateNode({node:updatedNode}, context)
+  // [ASSERT]
+  expect.assertions(1)
+  expect(result).toStrictEqual(updatedNode)
+})
+
 test('(IN)COMPLETE: should mark a node as completed or incompleted and return it', async () => {
   // [ACT]
   const complete1 = await root.markNodeComplete({ nodeId: values.nodes[0].nodeId }, context)
@@ -128,7 +137,7 @@ test('(IN)COMPLETE: should mark a node as completed or incompleted and return it
   const incomplete1 = await root.markNodeIncomplete({ nodeId: values.nodes[0].nodeId }, context)
   const incomplete2 = await root.markNodeIncomplete({ nodeId: values.nodes[1].nodeId }, context)
   // [ASSERT]
-  // expect.assertions(4)
+  expect.assertions(4)
   expect(complete1).toHaveProperty('completed', true)
   expect(complete2).toHaveProperty('completed', true)
   expect(incomplete1).toHaveProperty('completed', false)
