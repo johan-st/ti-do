@@ -1,0 +1,10 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.canWrite = exports.canRead = exports.canDelete = exports.canAdmin = exports.authenticator = void 0;
+var authentication_1 = require("./authentication");
+Object.defineProperty(exports, "authenticator", { enumerable: true, get: function () { return authentication_1.authenticator; } });
+var authorization_1 = require("./authorization");
+Object.defineProperty(exports, "canAdmin", { enumerable: true, get: function () { return authorization_1.canAdmin; } });
+Object.defineProperty(exports, "canDelete", { enumerable: true, get: function () { return authorization_1.canDelete; } });
+Object.defineProperty(exports, "canRead", { enumerable: true, get: function () { return authorization_1.canRead; } });
+Object.defineProperty(exports, "canWrite", { enumerable: true, get: function () { return authorization_1.canWrite; } });
