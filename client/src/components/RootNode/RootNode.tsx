@@ -13,8 +13,9 @@ import {
   CardContent,
   Collapse,
 } from '@material-ui/core'
-import { red } from '@material-ui/core/colors'
+// import { red } from '@material-ui/core/colors'
 import { ExpandMore as ExpandMoreIcon } from '@material-ui/icons'
+// import { compile } from 'joi'
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -40,21 +41,29 @@ const useStyles = makeStyles((theme: Theme) =>
 
 
 const RootNode = (props: RootNodeProps): JSX.Element => {
+  console.log(props.node)
+
   const classes = useStyles()
 
   const [expanded, setExpanded] = React.useState(false)
   const handleExpandClick = () => {
     setExpanded(!expanded)
   }
-
+  const completeHandler = () => {
+    CMD.toggleDone(props.node, props.dispatch)
+  }
   const [notes, setNotes] = React.useState(props.node.notes)
-  let saveTimeout: NodeJS.Timeout
-  const notesChangeHandler = (e: { target: { value: React.SetStateAction<string | undefined> } }) => {
+  const [timeoutId, setTimeoutId] = React.useState(-1)
+
+  const notesChangeHandler = (e: any) => {
     setNotes(e.target.value)
-    saveTimeout.unref()
-    saveTimeout = setTimeout(() => {
-      CMD.updateNode({ ...props.node, notes: notes }, props.dispatch)
+    console.log(e.target.value)
+
+    clearTimeout(timeoutId)
+    const id = setTimeout(() => {
+      CMD.updateNode({ ...props.node, notes: e.target.value }, props.dispatch)
     }, 5000)
+    setTimeoutId(id as unknown as number)
   }
   const subNodes = props.node.subNodes.map((node, index) => <SubNodeWrapper key={node.nodeId} node={node} index={index} />)
   return (
@@ -70,14 +79,13 @@ const RootNode = (props: RootNodeProps): JSX.Element => {
           id="outlined-disabled"
           label="notes"
           variant="outlined"
-          value={notes}
+          value={notes ? notes : ''}
           onChange={notesChangeHandler}
         />
 
       </CardContent>
       <CardActions>
-        <Button size="small">done</Button>
-        <Button size="small">remove</Button>
+        <Button size="small" onClick={completeHandler}>{props.node.completed ? 'done' : 'undone'}</Button>
         <IconButton
           className={clsx(classes.expand, {
             [classes.expandOpen]: expanded,
@@ -89,7 +97,9 @@ const RootNode = (props: RootNodeProps): JSX.Element => {
       </CardActions>
       <Collapse in={expanded} timeout="auto" unmountOnExit>
         <CardContent>
-          {subNodes.length > 0 ? subNodes : 'no subtasks yet'}
+          {subNodes
+            ? subNodes.length > 0 ? subNodes : 'no subtasks yet'
+            : ''}
         </CardContent>
       </Collapse>
     </Card>

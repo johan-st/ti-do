@@ -48,10 +48,10 @@ const  CMD = {
     const body = 
     isRoot
       ? JSON.stringify(
-        { query: 'mutation createRootNode($title:String!) {  createRootNode(listNode:{title:$title}) { nodeId title notes subNodes{ nodeId }  } }',
+        { query: 'mutation ($title:String!) {  createRootNode(listNode:{title:$title}) { nodeId title notes subNodes{ nodeId }  } }',
           variables: {title}})
       : JSON.stringify(
-        { query: 'mutation createChildNode($title:String!) {  createChildNode(listNode:{title:$title}) { nodeId title notes subNodes{ nodeId }  } }',
+        { query: 'mutation ($title:String!) {  createChildNode(listNode:{title:$title}) { nodeId title notes subNodes{ nodeId }  } }',
           variables: {title}})
 
     fetch('http://localhost:3001/gql', {
@@ -70,13 +70,61 @@ const  CMD = {
           throw new Error(json)
           
         }
-        dispatch(Msg.ITEM_ADDED(json, null))
+        console.log('################',json)
+        if(json.data.createRootNode){
+          dispatch(Msg.ITEM_ADDED(json.data.createRootNode, null))
+        } else {
+          dispatch(Msg.ITEM_ADDED(json.data.createChildNode, null))
+        }
+      })
+      .catch(err => console.error(err))
+  },
+  toggleDone : (node:ListNode ,dispatch: Dispatch<Msg>):void => {
+    console.log(node)
+    dispatch(Msg.ITEM_CHANGED({...node, completed: !node.completed}))
+
+    let body:string
+    if (node.completed) {
+      body =  JSON.stringify(
+        { query: 'mutation ($nodeId:String!) {markNodeIncomplete(nodeId:$nodeId) { nodeId title notes subNodes{ nodeId }}}',
+          variables: {nodeId: node.nodeId}})
+
+    } else {
+      body =  JSON.stringify(
+        { query: `mutation done($nodeId:String!) {
+          markNodeComplete(nodeId:$nodeId) { 
+            nodeId 
+            title 
+            notes 
+            subNodes{ 
+              nodeId 
+            }}}`,
+        variables: {nodeId: node.nodeId}})
+    }
+    console.log(body)
+    
+    fetch('http://localhost:3001/gql', {
+      method: 'POST',
+      headers: { 
+        'Content-Type': 'application/json',
+        'Accepts': 'application/json'
+      },      
+      body
+    })
+      .then(raw => {
+        return raw.json()
+      })
+      .then(json => {
+        if (json.errors) {
+          throw new Error(json)
+        }
+        dispatch(Msg.ITEM_CHANGED(json))
       })
       .catch(err => console.error(err))
   },
   updateNode : (newNode:ListNode ,dispatch: Dispatch<Msg>):void => {
     const body =  JSON.stringify(
-      { query: 'mutation updateNode($node:String!) {  updateNode(listNode:{node:$node}) { nodeId title notes subNodes{ nodeId }  } }',
+      { query: 'mutation ($node:String!) {  updateNode(node:{node:$node}) { nodeId title notes subNodes{ nodeId }  } }',
         variables: {newNode}})
 
     fetch('http://localhost:3001/gql', {

@@ -49,7 +49,7 @@ function App(): JSX.Element {
                 <Grid
                   container
                   direction="row"
-                  justify="center"
+                  justify="flex-start"
                   alignItems="center"
                 >
                   {state.lists.map((node, index) => (

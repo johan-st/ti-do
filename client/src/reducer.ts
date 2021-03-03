@@ -31,7 +31,7 @@ type ADDED_PAYLOAD={
   parrent:ListNode|null
 }
 const reducer = (state: State, action: Msg):State => {
-  // console.log(action)
+  console.log(action)
   switch (action.type) {
   case 'DRAG_END':
     return {...state}
@@ -46,8 +46,7 @@ const reducer = (state: State, action: Msg):State => {
     //TODO: no recc structure yet
     if (parrent === null){
       return { ...state, 
-        lists: [...state.lists,{...item, active:true}], 
-        editor:item
+        lists: [...state.lists,{...item}], 
       }
     }
     return { ...state, lists: state.lists.map((n) => {
